@@ -1,9 +1,8 @@
-package ru.otus.otuskotlin.marketplace
+package dsl
 
 import org.junit.Test
-import ru.otus.otuskotlin.marketplace.user.dsl.buildUser
-import ru.otus.otuskotlin.marketplace.user.models.Action
-import ru.otus.otuskotlin.marketplace.user.models.User
+import user.dsl.buildUser
+import user.models.Action
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 

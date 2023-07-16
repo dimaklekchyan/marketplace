@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.user.models
+package user.models
 
 import java.time.LocalDateTime
 

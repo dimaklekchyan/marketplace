@@ -1,53 +1,83 @@
-package ru.otus.otuskotlin.marketplace.sql.dsl
+package sql.dsl
 
-@SqlSelectDsl
-class WhereContext {
-    val where: String = ""
-    val or: () -> Unit = {} //OrContext
-}
+@DslMarker
+annotation class SqlSelectDslRootLevel
 
-@SqlSelectDsl
+@DslMarker
+annotation class SqlSelectDslFirstLevel
+
+@DslMarker
+annotation class SqlSelectDslSecondLevel
+
+@SqlSelectDslRootLevel
+fun query(block: SqlSelectBuilder.() -> Unit): SqlSelectBuilder = SqlSelectBuilder().apply(block)
+
+@SqlSelectDslFirstLevel
 class SqlSelectBuilder {
     private var select: Array<out String> = arrayOf("*")
     private var from: String? = null
     private var where: String = ""
 
-    @SqlSelectDsl
+    @SqlSelectDslFirstLevel
     fun select(vararg field: String) {
         select = field
     }
-    @SqlSelectDsl
+    @SqlSelectDslFirstLevel
     fun from(table: String) {
         from = table
     }
-    @SqlSelectDsl
+    @SqlSelectDslFirstLevel
     fun where(block: WhereContext.() -> Unit) {
-        val wcx = WhereContext().apply(block)
-
-        where = wcx.where
+        val ctx = WhereContext().apply(block)
+        where = ctx.where()
     }
 
     fun build(): String {
         from?.let {
-            val select = "select ${ this.select.joinToString(separator = ", ", postfix = "", prefix = "") }"
+            val select = "select ${ this.select.joinToString(separator = ", ") }"
             val from = "from ${this.from}"
-            val where = "where ${this.where}"
-            return "$select $from $where"
+            val where = if(this.where.isNotEmpty()) "where ${this.where}" else ""
+            return "$select $from $where".trim()
         } ?: throw Exception()
     }
 }
 
-infix fun String.eq(another: String?): String = another?.let { "$this = '$it'" } ?: "$this is null"
-infix fun String.nonEq(another: String?): String = another?.let { "$this != '$it'" } ?: "$this !is null"
+@SqlSelectDslSecondLevel
+open class WhereContext: WhereBuilder() {
+    override val operator: WhereOperator = WhereOperator.AND
 
-infix fun String.eq(another: Number?): String = another?.let { "$this = $it" } ?: "$this is null"
-infix fun String.nonEq(another: Number?): String = another?.let { "$this != $it" } ?: "$this !is null"
+    @SqlSelectDslSecondLevel
+    fun or(block: OrContext.() -> Unit) {
+        val ctx = OrContext().apply(block)
+        where = ctx.where
+    }
+}
 
-@SqlSelectDsl1
-fun query(block: SqlSelectBuilder.() -> Unit): SqlSelectBuilder = SqlSelectBuilder().apply(block)
+@SqlSelectDslSecondLevel
+class OrContext: WhereBuilder() {
+    override val operator: WhereOperator = WhereOperator.OR
+}
 
-@DslMarker
-annotation class SqlSelectDsl
+open class WhereBuilder {
+    open val operator: WhereOperator = WhereOperator.AND
 
-@DslMarker
-annotation class SqlSelectDsl1
+    private  val elements = mutableListOf<String>()
+    var where: () -> String = {
+        elements.joinToString(
+            separator = operator.separator,
+            prefix = if (elements.size > 1) "(" else "",
+            postfix = if (elements.size > 1) ")" else "",
+        )
+    }
+
+    infix fun String.eq(another: String) = elements.add("$this = '$another'")
+    infix fun String.nonEq(another: String) = elements.add("$this != '$another'")
+
+    infix fun String.eq(another: Any?) = elements.add(another?.let { "$this = $it" } ?: "$this is null")
+    infix fun String.nonEq(another: Any?) = elements.add(another?.let { "$this != $it" } ?: "$this !is null")
+
+    enum class WhereOperator(val separator: String) {
+        AND(" and "),
+        OR(" or ")
+    }
+}

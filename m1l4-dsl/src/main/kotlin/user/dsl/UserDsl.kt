@@ -1,7 +1,7 @@
-package ru.otus.otuskotlin.marketplace.user.dsl
+package user.dsl
 
-import ru.otus.otuskotlin.marketplace.user.models.Action
-import ru.otus.otuskotlin.marketplace.user.models.User
+import user.models.Action
+import user.models.User
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime

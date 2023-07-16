@@ -1,9 +1,8 @@
-package ru.otus.otuskotlin.marketplace.dsl
+package dsl
 
 import org.junit.Test
-import ru.otus.otuskotlin.marketplace.sql.dsl.SqlSelectBuilder
-import ru.otus.otuskotlin.marketplace.sql.dsl.eq
-import ru.otus.otuskotlin.marketplace.sql.dsl.query
+import sql.dsl.SqlSelectBuilder
+import sql.dsl.query
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
@@ -70,7 +69,7 @@ class SqlDslUnitTest {
         val real = query {
             from("table")
             where {
-//                where = "col_a" eq "id"
+                "col_a" eq "id"
             }
         }
 
@@ -85,32 +84,32 @@ class SqlDslUnitTest {
      */
     @Test
     fun `select with complex where condition with two conditions`() {
-//        val expected = "select * from table where col_a != 0"
-//
-//        val real = query {
-//            from("table")
-//            where {
-//                "col_a" nonEq 0
-//            }
-//        }
-//
-//        checkSQL(expected, real)
+        val expected = "select * from table where col_a != 0"
+
+        val real = query {
+            from("table")
+            where {
+                "col_a" nonEq 0
+            }
+        }
+
+        checkSQL(expected, real)
     }
 
     @Test
     fun `when 'or' conditions are specified then they are respected`() {
-//        val expected = "select * from table where (col_a = 4 or col_b !is null)"
-//
-//        val real = query {
-//            from("table")
-//            where {
-//                or {
-//                    "col_a" eq 4
-//                    "col_b" nonEq null
-//                }
-//            }
-//        }
-//
-//        checkSQL(expected, real)
+        val expected = "select * from table where (col_a = 4 or col_b !is null)"
+
+        val real = query {
+            from("table")
+            where {
+                or {
+                    "col_a" eq 4
+                    "col_b" nonEq null
+                }
+            }
+        }
+
+        checkSQL(expected, real)
     }
 }
