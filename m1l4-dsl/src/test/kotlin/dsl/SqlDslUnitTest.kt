@@ -83,7 +83,7 @@ class SqlDslUnitTest {
      */
     @Test
     fun `select with complex where condition with two conditions`() {
-        val expected = "select * from table where col_a <> 0"
+        val expected = "select * from table where col_a != 0"
 
         val real = query {
             from("table")
@@ -97,7 +97,7 @@ class SqlDslUnitTest {
 
     @Test
     fun `when 'or' conditions are specified then they are respected`() {
-        val expected = "select * from table where (col_a = 4 or col_b is not null)"
+        val expected = "select * from table where (col_a = 4 or col_b !is null)"
 
         val real = query {
             from("table")
@@ -118,8 +118,8 @@ class SqlDslUnitTest {
                 "select name, age " +
                 "from users " +
                 "where name = 'Anna' " +
-                    "and (age = 15 or age <> 20) " +
-                    "and (height = 170 and eye_color <> 'green') " +
+                    "and (age = 15 or (feet_size = 26 and waist_size = 90) or age != 20) " +
+                    "and (height = 170 and eye_color != 'green') " +
                 "order by address"
 
         val real = query {
@@ -129,6 +129,10 @@ class SqlDslUnitTest {
                 "name" eq "Anna"
                 or {
                     "age" eq 15
+                    and {
+                        "feet_size" eq 26
+                        "waist_size" eq 90
+                    }
                     "age" nonEq 20
                 }
                 and {
