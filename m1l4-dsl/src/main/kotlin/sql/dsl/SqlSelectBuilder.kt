@@ -1,83 +1,103 @@
 package sql.dsl
 
 @DslMarker
-annotation class SqlSelectDslRootLevel
+annotation class SqlSelectDslRoot
 
 @DslMarker
-annotation class SqlSelectDslFirstLevel
+annotation class SqlSelectDsl
 
-@DslMarker
-annotation class SqlSelectDslSecondLevel
+@SqlSelectDslRoot
+fun query(block: SqlSelectBuilder.() -> Unit): String = SqlSelectBuilder().apply(block).build()
 
-@SqlSelectDslRootLevel
-fun query(block: SqlSelectBuilder.() -> Unit): SqlSelectBuilder = SqlSelectBuilder().apply(block)
-
-@SqlSelectDslFirstLevel
+@SqlSelectDsl
 class SqlSelectBuilder {
-    private var select: Array<out String> = arrayOf("*")
+    private var select: String = "*"
     private var from: String? = null
     private var where: String = ""
+    private var orderBy: String = ""
 
-    @SqlSelectDslFirstLevel
+    @SqlSelectDsl
     fun select(vararg field: String) {
-        select = field
+        select = field.joinToString(separator = ", ")
     }
-    @SqlSelectDslFirstLevel
+
+    @SqlSelectDsl
     fun from(table: String) {
         from = table
     }
-    @SqlSelectDslFirstLevel
+
+    @SqlSelectDsl
     fun where(block: WhereContext.() -> Unit) {
         val ctx = WhereContext().apply(block)
-        where = ctx.where()
+        where = ctx.build()
+    }
+
+    @SqlSelectDsl
+    fun orderBy(vararg field: String) {
+        orderBy = field.joinToString(separator = ", ")
     }
 
     fun build(): String {
         from?.let {
-            val select = "select ${ this.select.joinToString(separator = ", ") }"
+            val select = "select ${this.select}"
             val from = "from ${this.from}"
             val where = if(this.where.isNotEmpty()) "where ${this.where}" else ""
-            return "$select $from $where".trim()
+            val orderBy = if(this.orderBy.isNotEmpty()) "order by ${this.orderBy}" else ""
+            return "$select $from $where $orderBy".trim()
         } ?: throw Exception()
     }
 }
 
-@SqlSelectDslSecondLevel
-open class WhereContext: WhereBuilder() {
-    override val operator: WhereOperator = WhereOperator.AND
-
-    @SqlSelectDslSecondLevel
+@SqlSelectDsl
+class WhereContext: WhereBuilder() {
+    @SqlSelectDsl
     fun or(block: OrContext.() -> Unit) {
-        val ctx = OrContext().apply(block)
-        where = ctx.where
+        addCondition("(${OrContext().apply(block).build(WhereOperator.OR)})")
+    }
+
+    @SqlSelectDsl
+    fun and(block: AndContext.() -> Unit) {
+        addCondition("(${AndContext().apply(block).build(WhereOperator.AND)})")
     }
 }
 
-@SqlSelectDslSecondLevel
-class OrContext: WhereBuilder() {
-    override val operator: WhereOperator = WhereOperator.OR
-}
+@SqlSelectDsl
+class OrContext: WhereBuilder()
+
+@SqlSelectDsl
+class AndContext: WhereBuilder()
 
 open class WhereBuilder {
-    open val operator: WhereOperator = WhereOperator.AND
+    private val conditions = mutableListOf<String>()
 
-    private  val elements = mutableListOf<String>()
-    var where: () -> String = {
-        elements.joinToString(
-            separator = operator.separator,
-            prefix = if (elements.size > 1) "(" else "",
-            postfix = if (elements.size > 1) ")" else "",
-        )
+    fun addCondition(condition: String) {
+        conditions += condition
     }
 
-    infix fun String.eq(another: String) = elements.add("$this = '$another'")
-    infix fun String.nonEq(another: String) = elements.add("$this != '$another'")
+    infix fun String.eq(another: Any?) {
+        conditions += when (another) {
+            is Number -> "$this = $another"
+            is String -> "$this = '$another'"
+            null -> "$this is null"
+            else -> throw Exception("Wrong value: $another")
+        }
+    }
 
-    infix fun String.eq(another: Any?) = elements.add(another?.let { "$this = $it" } ?: "$this is null")
-    infix fun String.nonEq(another: Any?) = elements.add(another?.let { "$this != $it" } ?: "$this !is null")
+    infix fun String.nonEq(another: Any?) {
+        conditions += when (another) {
+            is Number -> "$this <> $another"
+            is String -> "$this <> '$another'"
+            null -> "$this is not null"
+            else -> throw Exception("Wrong value: $another")
+        }
+    }
+
+    fun build(operator: WhereOperator = WhereOperator.AND): String {
+        return conditions.joinToString(" ${operator.separator} ")
+    }
 
     enum class WhereOperator(val separator: String) {
-        AND(" and "),
-        OR(" or ")
+        AND("and"),
+        OR("or")
     }
 }

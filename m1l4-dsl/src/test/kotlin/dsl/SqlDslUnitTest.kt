@@ -1,15 +1,14 @@
 package dsl
 
 import org.junit.Test
-import sql.dsl.SqlSelectBuilder
 import sql.dsl.query
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 // Реализуйте dsl для составления sql запроса, чтобы все тесты стали зелеными.
 class SqlDslUnitTest {
-    private fun checkSQL(expected: String, sql: SqlSelectBuilder) {
-        assertEquals(expected, sql.build())
+    private fun checkSQL(expected: String, sql: String) {
+        assertEquals(expected, sql)
     }
 
     @Test
@@ -28,7 +27,7 @@ class SqlDslUnitTest {
         assertFailsWith<Exception> {
             query {
                 select("col_a")
-            }.build()
+            }
         }
     }
 
@@ -84,7 +83,7 @@ class SqlDslUnitTest {
      */
     @Test
     fun `select with complex where condition with two conditions`() {
-        val expected = "select * from table where col_a != 0"
+        val expected = "select * from table where col_a <> 0"
 
         val real = query {
             from("table")
@@ -98,7 +97,7 @@ class SqlDslUnitTest {
 
     @Test
     fun `when 'or' conditions are specified then they are respected`() {
-        val expected = "select * from table where (col_a = 4 or col_b !is null)"
+        val expected = "select * from table where (col_a = 4 or col_b is not null)"
 
         val real = query {
             from("table")
@@ -108,6 +107,36 @@ class SqlDslUnitTest {
                     "col_b" nonEq null
                 }
             }
+        }
+
+        checkSQL(expected, real)
+    }
+
+    @Test
+    fun `all operators`() {
+        val expected =
+                "select name, age " +
+                "from users " +
+                "where name = 'Anna' " +
+                    "and (age = 15 or age <> 20) " +
+                    "and (height = 170 and eye_color <> 'green') " +
+                "order by address"
+
+        val real = query {
+            select("name", "age")
+            from("users")
+            where {
+                "name" eq "Anna"
+                or {
+                    "age" eq 15
+                    "age" nonEq 20
+                }
+                and {
+                    "height" eq 170
+                    "eye_color" nonEq "green"
+                }
+            }
+            orderBy("address")
         }
 
         checkSQL(expected, real)
