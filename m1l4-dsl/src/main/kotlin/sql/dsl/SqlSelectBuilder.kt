@@ -27,9 +27,8 @@ class SqlSelectBuilder {
     }
 
     @SqlSelectDsl
-    fun where(block: WhereContext.() -> Unit) {
-        val ctx = WhereContext().apply(block)
-        where = ctx.build()
+    fun where(block: WhereBuilder.() -> Unit) {
+        where = WhereBuilder().apply(block).build()
     }
 
     @SqlSelectDsl
@@ -39,57 +38,59 @@ class SqlSelectBuilder {
 
     fun build(): String {
         from?.let {
-            val select = "select ${this.select}"
-            val from = "from ${this.from}"
-            val where = if(this.where.isNotEmpty()) "where ${this.where}" else ""
-            val orderBy = if(this.orderBy.isNotEmpty()) "order by ${this.orderBy}" else ""
+            val select = getSelect()
+            val from = getFrom()
+            val where = getWhere()
+            val orderBy = getOrderBy()
             return "$select $from $where $orderBy".trim()
         } ?: throw Exception()
     }
+
+    private fun getSelect() = "$SELECT $select"
+    private fun getFrom() = "$FROM $from"
+    private fun getWhere() = if(where.isNotEmpty()) "$WHERE $where" else ""
+    private fun getOrderBy() = if(orderBy.isNotEmpty()) "$ORDER_BY $orderBy" else ""
+
+    companion object {
+        private const val SELECT = "select"
+        private const val FROM = "from"
+        private const val WHERE = "where"
+        private const val ORDER_BY = "order by"
+    }
 }
 
 @SqlSelectDsl
-class WhereContext: WhereBuilder() {
-    @SqlSelectDsl
-    fun or(block: OrContext.() -> Unit) {
-        addCondition("(${OrContext().apply(block).build(WhereOperator.OR)})")
-    }
-
-    @SqlSelectDsl
-    fun and(block: AndContext.() -> Unit) {
-        addCondition("(${AndContext().apply(block).build(WhereOperator.AND)})")
-    }
-}
-
-@SqlSelectDsl
-class OrContext: WhereBuilder()
-
-@SqlSelectDsl
-class AndContext: WhereBuilder()
-
-open class WhereBuilder {
+class WhereBuilder {
     private val conditions = mutableListOf<String>()
-
-    fun addCondition(condition: String) {
-        conditions += condition
-    }
 
     infix fun String.eq(another: Any?) {
         conditions += when (another) {
             is Number -> "$this = $another"
             is String -> "$this = '$another'"
             null -> "$this is null"
-            else -> throw Exception("Wrong value: $another")
+            else -> throw IllegalArgumentException()
         }
     }
 
     infix fun String.nonEq(another: Any?) {
         conditions += when (another) {
-            is Number -> "$this <> $another"
-            is String -> "$this <> '$another'"
-            null -> "$this is not null"
-            else -> throw Exception("Wrong value: $another")
+            is Number -> "$this != $another"
+            is String -> "$this != '$another'"
+            null -> "$this !is null"
+            else -> throw IllegalArgumentException()
         }
+    }
+
+    @SqlSelectDsl
+    fun or(block: WhereBuilder.() -> Unit) {
+        val orCondition = WhereBuilder().apply(block).build(WhereOperator.OR)
+        conditions += "($orCondition)"
+    }
+
+    @SqlSelectDsl
+    fun and(block: WhereBuilder.() -> Unit) {
+        val andCondition = WhereBuilder().apply(block).build(WhereOperator.AND)
+        conditions += "($andCondition)"
     }
 
     fun build(operator: WhereOperator = WhereOperator.AND): String {
