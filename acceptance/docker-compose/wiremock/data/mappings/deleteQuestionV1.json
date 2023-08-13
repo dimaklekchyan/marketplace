@@ -1,0 +1,12 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/v1/question/delete"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "result": "SUCCESS"
+    }
+  }
+}
