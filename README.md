@@ -12,3 +12,9 @@ QuizEngine - движок для создания и проведения кви
    * [Конкурентный анализ](./docs/01-marketing/03-competitors.md)
    * [Анализ экономики](./docs/01-marketing/04-economy.md)
    * [Пользовательские истории](./docs/01-marketing/05-user-stories.md)
+2. DevOps
+3. Тесты
+4. Архитектура
+   1. [Компонентная схема](./docs/04-architecture/architecture.md)
+   2. [Интеграционная схема](./docs/04-architecture/integration.md)
+   3. [Описание API](./docs/04-architecture/api.md)
