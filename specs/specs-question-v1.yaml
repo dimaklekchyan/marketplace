@@ -1,0 +1,418 @@
+openapi: 3.0.4
+info:
+  title: "Quiz engine"
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: question
+    description: Вопрос
+paths:
+  /question/create:
+    post:
+      tags:
+        - question
+      summary: Create question
+      operationId: questionCreate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionCreateResponse'
+
+  /question/read:
+    post:
+      tags:
+        - question
+      summary: Read question
+      operationId: questionRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionReadResponse'
+
+  /question/update:
+    post:
+      tags:
+        - question
+      summary: Update question
+      operationId: questionUpdate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionUpdateResponse'
+
+  /question/delete:
+    post:
+      tags:
+        - question
+      summary: Delete question
+      operationId: questionDelete
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionDeleteResponse'
+
+  /question/search:
+    post:
+      tags:
+        - question
+      summary: Search question
+      operationId: questionSearch
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionSearchRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionSearchResponse'
+
+components:
+  schemas:
+
+    IRequest:
+      type: object
+      description: Базовый интерфейс для всех запросов
+      properties:
+        requestType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+      discriminator:
+        propertyName: requestType
+        mapping:
+          create: '#/components/schemas/QuestionCreateRequest'
+          read:   '#/components/schemas/QuestionReadRequest'
+          update: '#/components/schemas/QuestionUpdateRequest'
+          delete: '#/components/schemas/QuestionDeleteRequest'
+          search: '#/components/schemas/QuestionSearchRequest'
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    ResponseResult:
+      type: string
+      enum:
+        - success
+        - error
+
+    IResponse:
+      type: object
+      description: Базовый интерфейс для всех ответов
+      properties:
+        responseType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+
+      discriminator:
+        propertyName: responseType
+        mapping:
+          createQuestion: '#/components/schemas/QuestionCreateResponse'
+          readQuestion:   '#/components/schemas/QuestionReadResponse'
+          updateQuestion: '#/components/schemas/QuestionUpdateResponse'
+          deleteQuestion: '#/components/schemas/QuestionDeleteResponse'
+          searchQuestion: '#/components/schemas/QuestionSearchResponse'
+
+    BaseQuestion:
+      type: object
+      description: Базовый интерфейс для всех вопросов
+      required:
+        - questionType
+        - gameId
+        - roundId
+        - formulation
+      properties:
+        questionType:
+          $ref: '#/components/schemas/QuestionType'
+        gameId:
+          type: integer
+          description: id игры, к которой привязан вопрос
+        roundId:
+          type: integer
+          description: id раунда, к которому привязан вопрос
+        formulation:
+          type: string
+          description: Формулировка вопроса
+        answers:
+          type: array
+          description: Варианты ответов
+          items:
+            $ref: '#/components/schemas/QuestionAnswer'
+        matchingTerms:
+          type: array
+          description: Элементы для сопоставления
+          items:
+            $ref: '#/components/schemas/QuestionMatchingTerm'
+
+    QuestionType:
+      type: string
+      description: Тип вопроса
+      example: openQuestion
+      enum:
+        - openQuestion
+        - multipleOptionsQuestion
+        - matchingTermsQuestion
+
+    QuestionAnswer:
+      type: object
+      description: Вариант ответа на вопрос
+      properties:
+        formulation:
+          type: string
+          description: Формулировка ответа
+        isRight:
+          type: boolean
+          description: Флаг правильности ответа
+
+    QuestionMatchingTerm:
+      type: object
+      description: Элемент для сопоставления
+      properties:
+        term:
+          type: string
+          description: Термин/понятие/сущность
+        definition:
+          type: string
+          description: Определение
+
+    QuestionId:
+      type: string
+      description: Идентификатор вопроса
+
+    QuestionCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseQuestion'
+
+    QuestionCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/QuestionRequestDebug'
+        - type: object
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionCreateObject'
+
+    QuestionReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/QuestionId'
+
+    QuestionReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/QuestionRequestDebug'
+        - type: object
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionReadObject'
+
+    QuestionUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseQuestion'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/QuestionId'
+
+    QuestionUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/QuestionRequestDebug'
+        - type: object
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionUpdateObject'
+
+    QuestionDeleteObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/QuestionId'
+
+    QuestionDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/QuestionRequestDebug'
+        - type: object
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionDeleteObject'
+
+    QuestionSearchFilter:
+      type: object
+      description: Набор фильтров для поиска
+      properties:
+        searchString:
+          type: string
+          description: Поисковая строка, которая будет искаться в формулировках вопросов
+
+    QuestionSearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/QuestionRequestDebug'
+        - type: object
+          properties:
+            questionFilter:
+              $ref: '#/components/schemas/QuestionSearchFilter'
+
+    # Responses
+
+    QuestionResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseQuestion'
+        - type: object
+          description: Объект, который возвращается в ответе бэкенда
+          properties:
+            id:
+              $ref: '#/components/schemas/QuestionId'
+
+
+    QuestionResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ с одним объектом объявления
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionResponseObject'
+
+    QuestionResponseMulti:
+      allOf:
+        - type: object
+          description: Список найденных объектов
+          properties:
+            questions:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuestionResponseObject'
+
+    QuestionCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/QuestionResponseSingle'
+
+    QuestionReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/QuestionResponseSingle'
+
+    QuestionUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/QuestionResponseSingle'
+
+    QuestionDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/QuestionResponseSingle'
+
+    QuestionSearchResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/QuestionResponseMulti'
+
+    # STUBS ======================
+    QuestionRequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    QuestionRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/QuestionDebug'
+
+    QuestionDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/QuestionRequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/QuestionRequestDebugStubs'
+
+    QuestionRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+        - badFormulation
+        - badAnswers
+        - badTerms
