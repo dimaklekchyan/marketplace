@@ -2,7 +2,15 @@
 
 QuizEngine - движок для создания и проведения квизов.
 
-[//]: # (## Визуальная схема фронтенда)
+## Визуальная схема фронтенда
+
+### Панель ведущего
+<img src="imgs/presenter_panel_main.png" width="500"/>
+<img src="imgs/presenter_panel_game.png" width="500"/>
+<img src="imgs/presenter_panel_round.png" width="500"/>
+<img src="imgs/presenter_panel_question.png" width="500"/>
+
+[//]: # (### Приложение участника)
 
 ## Документация
 
