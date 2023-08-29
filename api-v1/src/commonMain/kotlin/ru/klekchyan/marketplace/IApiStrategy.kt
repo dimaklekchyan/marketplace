@@ -1,3 +1,5 @@
+package ru.klekchyan.marketplace
+
 import kotlinx.serialization.KSerializer
 import kotlin.reflect.KClass
 

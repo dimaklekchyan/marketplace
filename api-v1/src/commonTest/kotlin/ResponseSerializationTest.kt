@@ -1,3 +1,5 @@
+import ru.klekchyan.marketplace.apiV1ResponseDeserialize
+import ru.klekchyan.marketplace.apiV1ResponseSerialize
 import ru.klekchyan.marketplace.api.v1.models.IResponse
 import ru.klekchyan.marketplace.api.v1.models.QuestionResponseObject
 import ru.klekchyan.marketplace.api.v1.models.QuestionType
@@ -17,7 +19,7 @@ class ResponseSerializationTest {
             formulation = "",
             answers = null,
             matchingTerms = null,
-            id = "234"
+            id = 234
         )
     )
 
@@ -28,7 +30,7 @@ class ResponseSerializationTest {
 
         assertContains(json, Regex("\"questionType\":\\s*\"multipleOptionsQuestion\""))
         assertContains(json, Regex("\"responseType\":\\s*\"updateQuestion\""))
-        assertContains(json, Regex("\"id\":\\s*\"234\""))
+        assertContains(json, Regex("\"id\":\\s*234"))
     }
 
     @Test

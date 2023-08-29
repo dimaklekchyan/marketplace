@@ -1,4 +1,4 @@
-openapi: 3.0.4
+openapi: 3.0.0
 info:
   title: "Quiz engine"
   license:
@@ -8,9 +8,339 @@ info:
 servers:
   - url: http://localhost:8080/v1
 tags:
+  - name: game
+    description: Игра
+  - name: round
+    description: Раунд
+  - name: theme
+    description: Тема
   - name: question
     description: Вопрос
 paths:
+
+  # Game
+
+  /game/create:
+    post:
+      tags:
+        - game
+      summary: Create game
+      operationId: gameCreate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameCreateResponse'
+
+  /game/read:
+    post:
+      tags:
+        - game
+      summary: Read game
+      operationId: gameRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameReadResponse'
+
+  /game/update:
+    post:
+      tags:
+        - game
+      summary: Update game
+      operationId: gameUpdate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameUpdateResponse'
+
+  /game/delete:
+    post:
+      tags:
+        - game
+      summary: Delete game
+      operationId: gameDelete
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameDeleteResponse'
+
+  /game/readAll:
+    post:
+      tags:
+        - game
+      summary: Read all games
+      operationId: gameReadAll
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameReadAllRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameReadAllResponse'
+
+  # Round
+
+  /round/create:
+    post:
+      tags:
+        - round
+      summary: Create round
+      operationId: roundCreate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoundCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoundCreateResponse'
+
+  /round/read:
+    post:
+      tags:
+        - round
+      summary: Read round
+      operationId: roundRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoundReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoundReadResponse'
+
+  /round/update:
+    post:
+      tags:
+        - round
+      summary: Update round
+      operationId: roundUpdate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoundUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoundUpdateResponse'
+
+  /round/delete:
+    post:
+      tags:
+        - round
+      summary: Delete round
+      operationId: roundDelete
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoundDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoundDeleteResponse'
+
+  /round/readAll:
+    post:
+      tags:
+        - round
+      summary: Read all rounds
+      operationId: roundReadAll
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoundReadAllRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoundReadAllResponse'
+
+    # Theme
+
+  /theme/create:
+    post:
+      tags:
+        - theme
+      summary: Create theme
+      operationId: themeCreate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThemeCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThemeCreateResponse'
+
+  /theme/read:
+    post:
+      tags:
+        - theme
+      summary: Read theme
+      operationId: themeRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThemeReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThemeReadResponse'
+
+  /theme/update:
+    post:
+      tags:
+        - theme
+      summary: Update theme
+      operationId: themeUpdate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThemeUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThemeUpdateResponse'
+
+  /theme/delete:
+    post:
+      tags:
+        - theme
+      summary: Delete theme
+      operationId: themeDelete
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThemeDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThemeDeleteResponse'
+
+  /theme/readAll:
+    post:
+      tags:
+        - theme
+      summary: Read all themes
+      operationId: themeReadAll
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThemeReadAllRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThemeReadAllResponse'
+
+  # Question
+
   /question/create:
     post:
       tags:
@@ -95,18 +425,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/QuestionDeleteResponse'
 
-  /question/search:
+  /question/readAll:
     post:
       tags:
         - question
-      summary: Search question
-      operationId: questionSearch
+      summary: Read all questions
+      operationId: questionReadAll
       requestBody:
         description: Request body
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/QuestionSearchRequest'
+              $ref: '#/components/schemas/QuestionReadAllRequest'
         required: true
       responses:
         200:
@@ -114,7 +444,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/QuestionSearchResponse'
+                $ref: '#/components/schemas/QuestionReadAllResponse'
 
 components:
   schemas:
@@ -133,11 +463,26 @@ components:
       discriminator:
         propertyName: requestType
         mapping:
-          create: '#/components/schemas/QuestionCreateRequest'
-          read:   '#/components/schemas/QuestionReadRequest'
-          update: '#/components/schemas/QuestionUpdateRequest'
-          delete: '#/components/schemas/QuestionDeleteRequest'
-          search: '#/components/schemas/QuestionSearchRequest'
+          createGame: '#/components/schemas/GameCreateRequest'
+          createRound: '#/components/schemas/RoundCreateRequest'
+          createTheme: '#/components/schemas/ThemeCreateRequest'
+          createQuestion: '#/components/schemas/QuestionCreateRequest'
+          readGame: '#/components/schemas/GameReadRequest'
+          readRound: '#/components/schemas/RoundReadRequest'
+          readTheme: '#/components/schemas/ThemeReadRequest'
+          readQuestion:   '#/components/schemas/QuestionReadRequest'
+          updateGame: '#/components/schemas/GameUpdateRequest'
+          updateRound: '#/components/schemas/RoundUpdateRequest'
+          updateTheme: '#/components/schemas/ThemeUpdateRequest'
+          updateQuestion: '#/components/schemas/QuestionUpdateRequest'
+          deleteGame: '#/components/schemas/GameDeleteRequest'
+          deleteRound: '#/components/schemas/RoundDeleteRequest'
+          deleteTheme: '#/components/schemas/ThemeDeleteRequest'
+          deleteQuestion: '#/components/schemas/QuestionDeleteRequest'
+          readAllGame: '#/components/schemas/GameReadAllRequest'
+          readAllRound: '#/components/schemas/RoundReadAllRequest'
+          readAllTheme: '#/components/schemas/ThemeReadAllRequest'
+          readAllQuestions: '#/components/schemas/QuestionReadAllRequest'
 
     Error:
       type: object
@@ -174,19 +519,164 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Error'
-
       discriminator:
         propertyName: responseType
         mapping:
+          createGame: '#/components/schemas/GameCreateResponse'
+          createRound: '#/components/schemas/RoundCreateResponse'
+          createTheme: '#/components/schemas/ThemeCreateResponse'
           createQuestion: '#/components/schemas/QuestionCreateResponse'
+          readGame: '#/components/schemas/GameReadResponse'
+          readRound: '#/components/schemas/RoundReadResponse'
+          readTheme: '#/components/schemas/ThemeReadResponse'
           readQuestion:   '#/components/schemas/QuestionReadResponse'
+          updateGame: '#/components/schemas/GameUpdateResponse'
+          updateRound: '#/components/schemas/RoundUpdateResponse'
+          updateTheme: '#/components/schemas/ThemeUpdateResponse'
           updateQuestion: '#/components/schemas/QuestionUpdateResponse'
+          deleteGame: '#/components/schemas/GameDeleteResponse'
+          deleteRound: '#/components/schemas/RoundDeleteResponse'
+          deleteTheme: '#/components/schemas/ThemeDeleteResponse'
           deleteQuestion: '#/components/schemas/QuestionDeleteResponse'
-          searchQuestion: '#/components/schemas/QuestionSearchResponse'
+          readAllGame: '#/components/schemas/GameReadAllResponse'
+          readAllRound: '#/components/schemas/RoundReadAllResponse'
+          readAllTheme: '#/components/schemas/ThemeReadAllResponse'
+          readAllQuestions: '#/components/schemas/QuestionReadAllResponse'
+
+    Lock:
+      type: string
+      description: Версия оптимистичной блокировки
+
+    BaseGame:
+      type: object
+      description: Базовый класс игры
+      required:
+        - title
+        - description
+      properties:
+        title:
+          type: string
+          description: Название игры
+        description:
+          type: string
+          description: Описание игры
+
+    GameResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseGame'
+        - type: object
+          description: Игра с id
+          properties:
+            id:
+              $ref: '#/components/schemas/GameId'
+            lock:
+              $ref: '#/components/schemas/Lock'
+
+    BaseRound:
+      type: object
+      description: Базовый класс раунда
+      required:
+        - gameId
+        - title
+        - description
+        - roundType
+      properties:
+        gameId:
+          type: integer
+          description: Идентификатор игры, к которой привязан раунд
+        title:
+          type: string
+          description: Название раунда
+        description:
+          type: string
+          description: Описание раунд
+        roundType:
+          $ref: '#/components/schemas/RoundType'
+        themes:
+          type: array
+          description: Список тем
+          items:
+            $ref: '#/components/schemas/BaseTheme'
+        questions:
+          type: array
+          description: Список вопросов
+          items:
+            $ref: '#/components/schemas/BaseQuestion'
+
+    RoundResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseRound'
+        - type: object
+          description: Раунд с id
+          properties:
+            id:
+              $ref: '#/components/schemas/RoundId'
+            lock:
+              $ref: '#/components/schemas/Lock'
+
+    RoundType:
+      type: string
+      description: Тип раунда
+      example: thematic
+      enum:
+        - custom
+        - thematic
+
+    BaseTheme:
+      type: object
+      description: Базовый класс темы
+      required:
+        - gameId
+        - roundId
+        - title
+        - description
+        - elements
+      properties:
+        gameId:
+          type: integer
+          description: Идентификатор игры, к которой привязана тема
+        roundId:
+          type: integer
+          description: Идентификатор раунда, к которому привязана тема
+        title:
+          type: string
+          description: Название темы
+        description:
+          type: string
+          description: Описание темы
+        elements:
+          type: array
+          description: Список элементов темы
+          items:
+            $ref: '#/components/schemas/ThemeElement'
+
+    ThemeResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseTheme'
+        - type: object
+          description: Тема с id
+          properties:
+            id:
+              $ref: '#/components/schemas/ThemeId'
+            lock:
+              $ref: '#/components/schemas/Lock'
+
+    ThemeElement:
+      type: object
+      description: Элемент темы, состоящий из номинала и вопроса
+      required:
+        - nominal
+        - question
+      properties:
+        nominal:
+          type: integer
+          description: Номинал вопроса
+        question:
+          $ref: '#/components/schemas/BaseQuestion'
 
     BaseQuestion:
       type: object
-      description: Базовый интерфейс для всех вопросов
+      description: Базовый класс вопроса
       required:
         - questionType
         - gameId
@@ -197,10 +687,13 @@ components:
           $ref: '#/components/schemas/QuestionType'
         gameId:
           type: integer
-          description: id игры, к которой привязан вопрос
+          description: Идентификатор игры, к которой привязан вопрос
         roundId:
           type: integer
-          description: id раунда, к которому привязан вопрос
+          description: Идентификатор раунда, к которому привязан вопрос
+        themeId:
+          type: integer
+          description: Идентификатор темы, к которой привязан вопрос
         formulation:
           type: string
           description: Формулировка вопроса
@@ -215,6 +708,17 @@ components:
           items:
             $ref: '#/components/schemas/QuestionMatchingTerm'
 
+    QuestionResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseQuestion'
+        - type: object
+          description: Вопрос с id
+          properties:
+            id:
+              $ref: '#/components/schemas/QuestionId'
+            lock:
+              $ref: '#/components/schemas/Lock'
+
     QuestionType:
       type: string
       description: Тип вопроса
@@ -227,6 +731,9 @@ components:
     QuestionAnswer:
       type: object
       description: Вариант ответа на вопрос
+      required:
+        - formulation
+        - isRight
       properties:
         formulation:
           type: string
@@ -238,6 +745,9 @@ components:
     QuestionMatchingTerm:
       type: object
       description: Элемент для сопоставления
+      required:
+        - term
+        - definition
       properties:
         term:
           type: string
@@ -246,13 +756,48 @@ components:
           type: string
           description: Определение
 
+    GameId:
+      type: integer
+      description: Идентификатор игры
+
+    RoundId:
+      type: integer
+      description: Идентификатор раунда
+
+    ThemeId:
+      type: integer
+      description: Идентификатор темы
+
     QuestionId:
-      type: string
+      type: integer
       description: Идентификатор вопроса
 
-    QuestionCreateObject:
+    GameCreateRequest:
       allOf:
-        - $ref: '#/components/schemas/BaseQuestion'
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/GameRequestDebug'
+        - type: object
+          properties:
+            game:
+              $ref: '#/components/schemas/BaseGame'
+
+    RoundCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RoundRequestDebug'
+        - type: object
+          properties:
+            round:
+              $ref: '#/components/schemas/BaseRound'
+
+    ThemeCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/ThemeRequestDebug'
+        - type: object
+          properties:
+            theme:
+              $ref: '#/components/schemas/BaseTheme'
 
     QuestionCreateRequest:
       allOf:
@@ -261,90 +806,275 @@ components:
         - type: object
           properties:
             question:
-              $ref: '#/components/schemas/QuestionCreateObject'
+              $ref: '#/components/schemas/BaseQuestion'
 
-    QuestionReadObject:
+    GameReadRequest:
       allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/GameRequestDebug'
         - type: object
+          required:
+            - gameId
           properties:
-            id:
-              $ref: '#/components/schemas/QuestionId'
+            gameId:
+              $ref: '#/components/schemas/GameId'
+
+    RoundReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RoundRequestDebug'
+        - type: object
+          required:
+            - roundId
+          properties:
+            roundId:
+              $ref: '#/components/schemas/RoundId'
+
+    ThemeReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/ThemeRequestDebug'
+        - type: object
+          required:
+            - themeId
+          properties:
+            themeId:
+              $ref: '#/components/schemas/ThemeId'
 
     QuestionReadRequest:
       allOf:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/QuestionRequestDebug'
         - type: object
+          required:
+            - questionId
           properties:
-            question:
-              $ref: '#/components/schemas/QuestionReadObject'
-
-    QuestionUpdateObject:
-      allOf:
-        - $ref: '#/components/schemas/BaseQuestion'
-        - type: object
-          properties:
-            id:
+            questionId:
               $ref: '#/components/schemas/QuestionId'
+
+    GameUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/GameRequestDebug'
+        - type: object
+          required:
+            - game
+            - id
+          properties:
+            game:
+              $ref: '#/components/schemas/BaseGame'
+            id:
+              $ref: '#/components/schemas/GameId'
+            lock:
+              $ref: '#/components/schemas/Lock'
+
+    RoundUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RoundRequestDebug'
+        - type: object
+          required:
+            - round
+            - id
+          properties:
+            round:
+              $ref: '#/components/schemas/BaseRound'
+            id:
+              $ref: '#/components/schemas/RoundId'
+            lock:
+              $ref: '#/components/schemas/Lock'
+
+    ThemeUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/ThemeRequestDebug'
+        - type: object
+          required:
+            - theme
+            - id
+          properties:
+            round:
+              $ref: '#/components/schemas/BaseTheme'
+            id:
+              $ref: '#/components/schemas/ThemeId'
+            lock:
+              $ref: '#/components/schemas/Lock'
 
     QuestionUpdateRequest:
       allOf:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/QuestionRequestDebug'
         - type: object
+          required:
+            - question
+            - id
           properties:
             question:
-              $ref: '#/components/schemas/QuestionUpdateObject'
-
-    QuestionDeleteObject:
-      allOf:
-        - type: object
-          properties:
+              $ref: '#/components/schemas/BaseQuestion'
             id:
               $ref: '#/components/schemas/QuestionId'
+            lock:
+              $ref: '#/components/schemas/Lock'
+
+    GameDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/GameRequestDebug'
+        - type: object
+          required:
+            - gameId
+          properties:
+            gameId:
+              $ref: '#/components/schemas/GameId'
+            lock:
+              $ref: '#/components/schemas/Lock'
+
+    RoundDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RoundRequestDebug'
+        - type: object
+          required:
+            - roundId
+          properties:
+            roundId:
+              $ref: '#/components/schemas/RoundId'
+            lock:
+              $ref: '#/components/schemas/Lock'
+
+    ThemeDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/ThemeRequestDebug'
+        - type: object
+          required:
+            - themeId
+          properties:
+            themeId:
+              $ref: '#/components/schemas/ThemeId'
+            lock:
+              $ref: '#/components/schemas/Lock'
 
     QuestionDeleteRequest:
       allOf:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/QuestionRequestDebug'
         - type: object
+          required:
+            - questionId
           properties:
-            question:
-              $ref: '#/components/schemas/QuestionDeleteObject'
+            questionId:
+              $ref: '#/components/schemas/QuestionId'
+            lock:
+              $ref: '#/components/schemas/Lock'
 
-    QuestionSearchFilter:
-      type: object
-      description: Набор фильтров для поиска
-      properties:
-        searchString:
-          type: string
-          description: Поисковая строка, которая будет искаться в формулировках вопросов
+    GameReadAllRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/GameRequestDebug'
+        - type: object
 
-    QuestionSearchRequest:
+    RoundReadAllRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RoundRequestDebug'
+        - type: object
+          required:
+            - gameId
+          properties:
+            gameId:
+              $ref: '#/components/schemas/GameId'
+
+    ThemeReadAllRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/ThemeRequestDebug'
+        - type: object
+          required:
+            - gameId
+            - roundId
+          properties:
+            gameId:
+              $ref: '#/components/schemas/GameId'
+            roundId:
+              $ref: '#/components/schemas/RoundId'
+
+    QuestionReadAllRequest:
       allOf:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/QuestionRequestDebug'
         - type: object
+          required:
+            - gameId
+            - roundId
           properties:
-            questionFilter:
-              $ref: '#/components/schemas/QuestionSearchFilter'
+            gameId:
+              $ref: '#/components/schemas/GameId'
+            roundId:
+              $ref: '#/components/schemas/RoundId'
+            themeId:
+              $ref: '#/components/schemas/ThemeId'
 
     # Responses
 
-    QuestionResponseObject:
+    GameResponseSingle:
       allOf:
-        - $ref: '#/components/schemas/BaseQuestion'
         - type: object
-          description: Объект, который возвращается в ответе бэкенда
+          description: Ответ бекенда с одной игрой
           properties:
-            id:
-              $ref: '#/components/schemas/QuestionId'
+            game:
+              $ref: '#/components/schemas/GameResponseObject'
 
+    GameResponseMulti:
+      allOf:
+        - type: object
+          description: Ответ бекенда с множеством игр
+          properties:
+            games:
+              type: array
+              items:
+                $ref: '#/components/schemas/GameResponseObject'
+
+    RoundResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ бекенда с одним раундом
+          properties:
+            round:
+              $ref: '#/components/schemas/RoundResponseObject'
+
+    RoundResponseMulti:
+      allOf:
+        - type: object
+          description: Ответ бекенда с множеством раундов
+          properties:
+            rounds:
+              type: array
+              items:
+                $ref: '#/components/schemas/RoundResponseObject'
+
+    ThemeResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ бекенда с одной темой
+          properties:
+            theme:
+              $ref: '#/components/schemas/ThemeResponseObject'
+
+    ThemeResponseMulti:
+      allOf:
+        - type: object
+          description: Ответ бекенда с множеством тем
+          properties:
+            themes:
+              type: array
+              items:
+                $ref: '#/components/schemas/ThemeResponseObject'
 
     QuestionResponseSingle:
       allOf:
         - type: object
-          description: Ответ с одним объектом объявления
+          description: Ответ бекенда с одним вопросом
           properties:
             question:
               $ref: '#/components/schemas/QuestionResponseObject'
@@ -352,45 +1082,138 @@ components:
     QuestionResponseMulti:
       allOf:
         - type: object
-          description: Список найденных объектов
+          description: Ответ бекенда с множеством вопросов
           properties:
             questions:
               type: array
               items:
                 $ref: '#/components/schemas/QuestionResponseObject'
 
+    GameCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/GameResponseSingle'
+
+    RoundCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/RoundResponseSingle'
+
+    ThemeCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/ThemeResponseSingle'
+
     QuestionCreateResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
         - $ref: '#/components/schemas/QuestionResponseSingle'
+
+    GameReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/GameResponseSingle'
+
+    RoundReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/RoundResponseSingle'
+
+    ThemeReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/ThemeResponseSingle'
 
     QuestionReadResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
         - $ref: '#/components/schemas/QuestionResponseSingle'
 
+    GameUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/GameResponseSingle'
+
+    RoundUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/RoundResponseSingle'
+
+    ThemeUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/ThemeResponseSingle'
+
     QuestionUpdateResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
         - $ref: '#/components/schemas/QuestionResponseSingle'
+
+    GameDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/GameResponseSingle'
+
+    RoundDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/RoundResponseSingle'
+
+    ThemeDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/ThemeResponseSingle'
 
     QuestionDeleteResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
         - $ref: '#/components/schemas/QuestionResponseSingle'
 
-    QuestionSearchResponse:
+    GameReadAllResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/GameResponseMulti'
+
+    RoundReadAllResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/RoundResponseMulti'
+
+    ThemeReadAllResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/ThemeResponseMulti'
+
+    QuestionReadAllResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
         - $ref: '#/components/schemas/QuestionResponseMulti'
 
     # STUBS ======================
-    QuestionRequestDebugMode:
+    RequestDebugMode:
       type: string
       enum:
         - prod
         - test
         - stub
+
+    GameRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/GameDebug'
+
+    RoundRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/RoundDebug'
+
+    ThemeRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/ThemeDebug'
 
     QuestionRequestDebug:
       type: object
@@ -398,13 +1221,68 @@ components:
         debug:
           $ref: '#/components/schemas/QuestionDebug'
 
+    GameDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/RequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/GameRequestDebugStubs'
+
+    RoundDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/RequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/RoundRequestDebugStubs'
+
+    ThemeDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/RequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/ThemeRequestDebugStubs'
+
     QuestionDebug:
       type: object
       properties:
         mode:
-          $ref: '#/components/schemas/QuestionRequestDebugMode'
+          $ref: '#/components/schemas/RequestDebugMode'
         stub:
           $ref: '#/components/schemas/QuestionRequestDebugStubs'
+
+    GameRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+
+    RoundRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+        - badGameId
+        - badRoundType
+        - badThemes
+        - badQuestions
+
+    ThemeRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+        - badGameId
+        - badRoundId
+        - badElements
 
     QuestionRequestDebugStubs:
       type: string
