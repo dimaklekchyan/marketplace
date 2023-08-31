@@ -12,8 +12,6 @@ tags:
     description: Игра
   - name: round
     description: Раунд
-  - name: theme
-    description: Тема
   - name: question
     description: Вопрос
 paths:
@@ -232,113 +230,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/RoundReadAllResponse'
 
-    # Theme
-
-  /theme/create:
-    post:
-      tags:
-        - theme
-      summary: Create theme
-      operationId: themeCreate
-      requestBody:
-        description: Request body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ThemeCreateRequest'
-        required: true
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ThemeCreateResponse'
-
-  /theme/read:
-    post:
-      tags:
-        - theme
-      summary: Read theme
-      operationId: themeRead
-      requestBody:
-        description: Request body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ThemeReadRequest'
-        required: true
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ThemeReadResponse'
-
-  /theme/update:
-    post:
-      tags:
-        - theme
-      summary: Update theme
-      operationId: themeUpdate
-      requestBody:
-        description: Request body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ThemeUpdateRequest'
-        required: true
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ThemeUpdateResponse'
-
-  /theme/delete:
-    post:
-      tags:
-        - theme
-      summary: Delete theme
-      operationId: themeDelete
-      requestBody:
-        description: Request body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ThemeDeleteRequest'
-        required: true
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ThemeDeleteResponse'
-
-  /theme/readAll:
-    post:
-      tags:
-        - theme
-      summary: Read all themes
-      operationId: themeReadAll
-      requestBody:
-        description: Request body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ThemeReadAllRequest'
-        required: true
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ThemeReadAllResponse'
-
   # Question
 
   /question/create:
@@ -465,23 +356,18 @@ components:
         mapping:
           createGame: '#/components/schemas/GameCreateRequest'
           createRound: '#/components/schemas/RoundCreateRequest'
-          createTheme: '#/components/schemas/ThemeCreateRequest'
           createQuestion: '#/components/schemas/QuestionCreateRequest'
           readGame: '#/components/schemas/GameReadRequest'
           readRound: '#/components/schemas/RoundReadRequest'
-          readTheme: '#/components/schemas/ThemeReadRequest'
           readQuestion:   '#/components/schemas/QuestionReadRequest'
           updateGame: '#/components/schemas/GameUpdateRequest'
           updateRound: '#/components/schemas/RoundUpdateRequest'
-          updateTheme: '#/components/schemas/ThemeUpdateRequest'
           updateQuestion: '#/components/schemas/QuestionUpdateRequest'
           deleteGame: '#/components/schemas/GameDeleteRequest'
           deleteRound: '#/components/schemas/RoundDeleteRequest'
-          deleteTheme: '#/components/schemas/ThemeDeleteRequest'
           deleteQuestion: '#/components/schemas/QuestionDeleteRequest'
           readAllGame: '#/components/schemas/GameReadAllRequest'
           readAllRound: '#/components/schemas/RoundReadAllRequest'
-          readAllTheme: '#/components/schemas/ThemeReadAllRequest'
           readAllQuestions: '#/components/schemas/QuestionReadAllRequest'
 
     Error:
@@ -524,23 +410,18 @@ components:
         mapping:
           createGame: '#/components/schemas/GameCreateResponse'
           createRound: '#/components/schemas/RoundCreateResponse'
-          createTheme: '#/components/schemas/ThemeCreateResponse'
           createQuestion: '#/components/schemas/QuestionCreateResponse'
           readGame: '#/components/schemas/GameReadResponse'
           readRound: '#/components/schemas/RoundReadResponse'
-          readTheme: '#/components/schemas/ThemeReadResponse'
           readQuestion:   '#/components/schemas/QuestionReadResponse'
           updateGame: '#/components/schemas/GameUpdateResponse'
           updateRound: '#/components/schemas/RoundUpdateResponse'
-          updateTheme: '#/components/schemas/ThemeUpdateResponse'
           updateQuestion: '#/components/schemas/QuestionUpdateResponse'
           deleteGame: '#/components/schemas/GameDeleteResponse'
           deleteRound: '#/components/schemas/RoundDeleteResponse'
-          deleteTheme: '#/components/schemas/ThemeDeleteResponse'
           deleteQuestion: '#/components/schemas/QuestionDeleteResponse'
           readAllGame: '#/components/schemas/GameReadAllResponse'
           readAllRound: '#/components/schemas/RoundReadAllResponse'
-          readAllTheme: '#/components/schemas/ThemeReadAllResponse'
           readAllQuestions: '#/components/schemas/QuestionReadAllResponse'
 
     Lock:
@@ -579,7 +460,6 @@ components:
         - gameId
         - title
         - description
-        - roundType
       properties:
         gameId:
           type: integer
@@ -590,18 +470,6 @@ components:
         description:
           type: string
           description: Описание раунд
-        roundType:
-          $ref: '#/components/schemas/RoundType'
-        themes:
-          type: array
-          description: Список тем
-          items:
-            $ref: '#/components/schemas/BaseTheme'
-        questions:
-          type: array
-          description: Список вопросов
-          items:
-            $ref: '#/components/schemas/BaseQuestion'
 
     RoundResponseObject:
       allOf:
@@ -613,66 +481,6 @@ components:
               $ref: '#/components/schemas/RoundId'
             lock:
               $ref: '#/components/schemas/Lock'
-
-    RoundType:
-      type: string
-      description: Тип раунда
-      example: thematic
-      enum:
-        - custom
-        - thematic
-
-    BaseTheme:
-      type: object
-      description: Базовый класс темы
-      required:
-        - gameId
-        - roundId
-        - title
-        - description
-        - elements
-      properties:
-        gameId:
-          type: integer
-          description: Идентификатор игры, к которой привязана тема
-        roundId:
-          type: integer
-          description: Идентификатор раунда, к которому привязана тема
-        title:
-          type: string
-          description: Название темы
-        description:
-          type: string
-          description: Описание темы
-        elements:
-          type: array
-          description: Список элементов темы
-          items:
-            $ref: '#/components/schemas/ThemeElement'
-
-    ThemeResponseObject:
-      allOf:
-        - $ref: '#/components/schemas/BaseTheme'
-        - type: object
-          description: Тема с id
-          properties:
-            id:
-              $ref: '#/components/schemas/ThemeId'
-            lock:
-              $ref: '#/components/schemas/Lock'
-
-    ThemeElement:
-      type: object
-      description: Элемент темы, состоящий из номинала и вопроса
-      required:
-        - nominal
-        - question
-      properties:
-        nominal:
-          type: integer
-          description: Номинал вопроса
-        question:
-          $ref: '#/components/schemas/BaseQuestion'
 
     BaseQuestion:
       type: object
@@ -691,9 +499,6 @@ components:
         roundId:
           type: integer
           description: Идентификатор раунда, к которому привязан вопрос
-        themeId:
-          type: integer
-          description: Идентификатор темы, к которой привязан вопрос
         formulation:
           type: string
           description: Формулировка вопроса
@@ -764,10 +569,6 @@ components:
       type: integer
       description: Идентификатор раунда
 
-    ThemeId:
-      type: integer
-      description: Идентификатор темы
-
     QuestionId:
       type: integer
       description: Идентификатор вопроса
@@ -789,15 +590,6 @@ components:
           properties:
             round:
               $ref: '#/components/schemas/BaseRound'
-
-    ThemeCreateRequest:
-      allOf:
-        - $ref: '#/components/schemas/IRequest'
-        - $ref: '#/components/schemas/ThemeRequestDebug'
-        - type: object
-          properties:
-            theme:
-              $ref: '#/components/schemas/BaseTheme'
 
     QuestionCreateRequest:
       allOf:
@@ -829,17 +621,6 @@ components:
           properties:
             roundId:
               $ref: '#/components/schemas/RoundId'
-
-    ThemeReadRequest:
-      allOf:
-        - $ref: '#/components/schemas/IRequest'
-        - $ref: '#/components/schemas/ThemeRequestDebug'
-        - type: object
-          required:
-            - themeId
-          properties:
-            themeId:
-              $ref: '#/components/schemas/ThemeId'
 
     QuestionReadRequest:
       allOf:
@@ -881,22 +662,6 @@ components:
               $ref: '#/components/schemas/BaseRound'
             id:
               $ref: '#/components/schemas/RoundId'
-            lock:
-              $ref: '#/components/schemas/Lock'
-
-    ThemeUpdateRequest:
-      allOf:
-        - $ref: '#/components/schemas/IRequest'
-        - $ref: '#/components/schemas/ThemeRequestDebug'
-        - type: object
-          required:
-            - theme
-            - id
-          properties:
-            round:
-              $ref: '#/components/schemas/BaseTheme'
-            id:
-              $ref: '#/components/schemas/ThemeId'
             lock:
               $ref: '#/components/schemas/Lock'
 
@@ -942,19 +707,6 @@ components:
             lock:
               $ref: '#/components/schemas/Lock'
 
-    ThemeDeleteRequest:
-      allOf:
-        - $ref: '#/components/schemas/IRequest'
-        - $ref: '#/components/schemas/ThemeRequestDebug'
-        - type: object
-          required:
-            - themeId
-          properties:
-            themeId:
-              $ref: '#/components/schemas/ThemeId'
-            lock:
-              $ref: '#/components/schemas/Lock'
-
     QuestionDeleteRequest:
       allOf:
         - $ref: '#/components/schemas/IRequest'
@@ -985,20 +737,6 @@ components:
             gameId:
               $ref: '#/components/schemas/GameId'
 
-    ThemeReadAllRequest:
-      allOf:
-        - $ref: '#/components/schemas/IRequest'
-        - $ref: '#/components/schemas/ThemeRequestDebug'
-        - type: object
-          required:
-            - gameId
-            - roundId
-          properties:
-            gameId:
-              $ref: '#/components/schemas/GameId'
-            roundId:
-              $ref: '#/components/schemas/RoundId'
-
     QuestionReadAllRequest:
       allOf:
         - $ref: '#/components/schemas/IRequest'
@@ -1012,8 +750,6 @@ components:
               $ref: '#/components/schemas/GameId'
             roundId:
               $ref: '#/components/schemas/RoundId'
-            themeId:
-              $ref: '#/components/schemas/ThemeId'
 
     # Responses
 
@@ -1053,24 +789,6 @@ components:
               items:
                 $ref: '#/components/schemas/RoundResponseObject'
 
-    ThemeResponseSingle:
-      allOf:
-        - type: object
-          description: Ответ бекенда с одной темой
-          properties:
-            theme:
-              $ref: '#/components/schemas/ThemeResponseObject'
-
-    ThemeResponseMulti:
-      allOf:
-        - type: object
-          description: Ответ бекенда с множеством тем
-          properties:
-            themes:
-              type: array
-              items:
-                $ref: '#/components/schemas/ThemeResponseObject'
-
     QuestionResponseSingle:
       allOf:
         - type: object
@@ -1099,11 +817,6 @@ components:
         - $ref: '#/components/schemas/IResponse'
         - $ref: '#/components/schemas/RoundResponseSingle'
 
-    ThemeCreateResponse:
-      allOf:
-        - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/ThemeResponseSingle'
-
     QuestionCreateResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
@@ -1118,11 +831,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/IResponse'
         - $ref: '#/components/schemas/RoundResponseSingle'
-
-    ThemeReadResponse:
-      allOf:
-        - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/ThemeResponseSingle'
 
     QuestionReadResponse:
       allOf:
@@ -1139,11 +847,6 @@ components:
         - $ref: '#/components/schemas/IResponse'
         - $ref: '#/components/schemas/RoundResponseSingle'
 
-    ThemeUpdateResponse:
-      allOf:
-        - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/ThemeResponseSingle'
-
     QuestionUpdateResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
@@ -1159,11 +862,6 @@ components:
         - $ref: '#/components/schemas/IResponse'
         - $ref: '#/components/schemas/RoundResponseSingle'
 
-    ThemeDeleteResponse:
-      allOf:
-        - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/ThemeResponseSingle'
-
     QuestionDeleteResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
@@ -1178,11 +876,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/IResponse'
         - $ref: '#/components/schemas/RoundResponseMulti'
-
-    ThemeReadAllResponse:
-      allOf:
-        - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/ThemeResponseMulti'
 
     QuestionReadAllResponse:
       allOf:
@@ -1209,12 +902,6 @@ components:
         debug:
           $ref: '#/components/schemas/RoundDebug'
 
-    ThemeRequestDebug:
-      type: object
-      properties:
-        debug:
-          $ref: '#/components/schemas/ThemeDebug'
-
     QuestionRequestDebug:
       type: object
       properties:
@@ -1236,14 +923,6 @@ components:
           $ref: '#/components/schemas/RequestDebugMode'
         stub:
           $ref: '#/components/schemas/RoundRequestDebugStubs'
-
-    ThemeDebug:
-      type: object
-      properties:
-        mode:
-          $ref: '#/components/schemas/RequestDebugMode'
-        stub:
-          $ref: '#/components/schemas/ThemeRequestDebugStubs'
 
     QuestionDebug:
       type: object
@@ -1269,20 +948,6 @@ components:
         - notFound
         - badId
         - badGameId
-        - badRoundType
-        - badThemes
-        - badQuestions
-
-    ThemeRequestDebugStubs:
-      type: string
-      description: Перечисления всех стабов
-      enum:
-        - success
-        - notFound
-        - badId
-        - badGameId
-        - badRoundId
-        - badElements
 
     QuestionRequestDebugStubs:
       type: string
