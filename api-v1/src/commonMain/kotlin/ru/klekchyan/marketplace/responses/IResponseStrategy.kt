@@ -24,10 +24,16 @@ interface IResponseStrategy: IApiStrategy<IResponse> {
 
         val members: List<IResponseStrategy> = listOf(
             createGameResponseStrategy,
-            readAllGamesResponseStrategy,
+            readGameResponseStrategy,
             updateGameResponseStrategy,
             deleteGameResponseStrategy,
             readAllGamesResponseStrategy,
+
+            createRoundResponseStrategy,
+            readRoundResponseStrategy,
+            updateRoundResponseStrategy,
+            deleteRoundResponseStrategy,
+            readAllRoundsResponseStrategy,
 
             createQuestionResponseStrategy,
             readQuestionResponseStrategy,

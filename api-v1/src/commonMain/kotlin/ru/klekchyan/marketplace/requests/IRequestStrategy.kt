@@ -29,6 +29,12 @@ interface IRequestStrategy: IApiStrategy<IRequest> {
             deleteGameRequestStrategy,
             readAllGamesRequestStrategy,
 
+            createRoundRequestStrategy,
+            readRoundRequestStrategy,
+            updateRoundRequestStrategy,
+            deleteRoundRequestStrategy,
+            readAllRoundsRequestStrategy,
+
             createQuestionRequestStrategy,
             readQuestionRequestStrategy,
             updateQuestionRequestStrategy,

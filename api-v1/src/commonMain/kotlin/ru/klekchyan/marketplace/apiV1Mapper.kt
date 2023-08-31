@@ -29,12 +29,6 @@ val apiV1Mapper = Json {
                 is RoundDeleteRequest ->  RequestSerializer(RoundDeleteRequest.serializer()) as SerializationStrategy<IRequest>
                 is RoundReadAllRequest ->  RequestSerializer(RoundReadAllRequest.serializer()) as SerializationStrategy<IRequest>
 
-                is ThemeCreateRequest ->  RequestSerializer(ThemeCreateRequest.serializer()) as SerializationStrategy<IRequest>
-                is ThemeReadRequest ->  RequestSerializer(ThemeReadRequest.serializer()) as SerializationStrategy<IRequest>
-                is ThemeUpdateRequest ->  RequestSerializer(ThemeUpdateRequest.serializer()) as SerializationStrategy<IRequest>
-                is ThemeDeleteRequest ->  RequestSerializer(ThemeDeleteRequest.serializer()) as SerializationStrategy<IRequest>
-                is ThemeReadAllRequest ->  RequestSerializer(ThemeReadAllRequest.serializer()) as SerializationStrategy<IRequest>
-
                 is QuestionCreateRequest ->  RequestSerializer(QuestionCreateRequest.serializer()) as SerializationStrategy<IRequest>
                 is QuestionReadRequest ->  RequestSerializer(QuestionReadRequest.serializer()) as SerializationStrategy<IRequest>
                 is QuestionUpdateRequest ->  RequestSerializer(QuestionUpdateRequest.serializer()) as SerializationStrategy<IRequest>
@@ -60,12 +54,6 @@ val apiV1Mapper = Json {
                 is RoundUpdateResponse ->  ResponseSerializer(RoundUpdateResponse.serializer()) as SerializationStrategy<IResponse>
                 is RoundDeleteResponse ->  ResponseSerializer(RoundDeleteResponse.serializer()) as SerializationStrategy<IResponse>
                 is RoundReadAllResponse ->  ResponseSerializer(RoundReadAllResponse.serializer()) as SerializationStrategy<IResponse>
-
-                is ThemeCreateResponse ->  ResponseSerializer(ThemeCreateResponse.serializer()) as SerializationStrategy<IResponse>
-                is ThemeReadResponse   ->  ResponseSerializer(ThemeReadResponse  .serializer()) as SerializationStrategy<IResponse>
-                is ThemeUpdateResponse ->  ResponseSerializer(ThemeUpdateResponse.serializer()) as SerializationStrategy<IResponse>
-                is ThemeDeleteResponse ->  ResponseSerializer(ThemeDeleteResponse.serializer()) as SerializationStrategy<IResponse>
-                is ThemeReadAllResponse ->  ResponseSerializer(ThemeReadAllResponse.serializer()) as SerializationStrategy<IResponse>
 
                 is QuestionCreateResponse ->  ResponseSerializer(QuestionCreateResponse.serializer()) as SerializationStrategy<IResponse>
                 is QuestionReadResponse   ->  ResponseSerializer(QuestionReadResponse  .serializer()) as SerializationStrategy<IResponse>
