@@ -1,8 +1,8 @@
-package ru.klekchyan.marketplace.responses
+package ru.klekchyan.quizEngine.responses
 
 import kotlinx.serialization.KSerializer
-import ru.klekchyan.marketplace.IApiStrategy
-import ru.klekchyan.marketplace.api.v1.models.IResponse
+import ru.klekchyan.quizEngine.IApiStrategy
+import ru.klekchyan.quizEngine.api.v1.models.IResponse
 import kotlin.reflect.KClass
 
 interface IResponseStrategy: IApiStrategy<IResponse> {

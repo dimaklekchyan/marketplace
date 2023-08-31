@@ -1,9 +1,9 @@
-import ru.klekchyan.marketplace.apiV1ResponseDeserialize
-import ru.klekchyan.marketplace.apiV1ResponseSerialize
-import ru.klekchyan.marketplace.api.v1.models.IResponse
-import ru.klekchyan.marketplace.api.v1.models.QuestionResponseObject
-import ru.klekchyan.marketplace.api.v1.models.QuestionType
-import ru.klekchyan.marketplace.api.v1.models.QuestionUpdateResponse
+import ru.klekchyan.quizEngine.apiV1ResponseDeserialize
+import ru.klekchyan.quizEngine.apiV1ResponseSerialize
+import ru.klekchyan.quizEngine.api.v1.models.IResponse
+import ru.klekchyan.quizEngine.api.v1.models.QuestionResponseObject
+import ru.klekchyan.quizEngine.api.v1.models.QuestionType
+import ru.klekchyan.quizEngine.api.v1.models.QuestionUpdateResponse
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals

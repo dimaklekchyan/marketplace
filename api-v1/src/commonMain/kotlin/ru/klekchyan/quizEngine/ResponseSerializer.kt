@@ -1,4 +1,4 @@
-package ru.klekchyan.marketplace
+package ru.klekchyan.quizEngine
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
@@ -7,32 +7,33 @@ import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import ru.klekchyan.marketplace.requests.IRequestStrategy
-import ru.klekchyan.marketplace.api.v1.models.*
+import ru.klekchyan.quizEngine.responses.IResponseStrategy
+import ru.klekchyan.quizEngine.api.v1.models.IResponse
 
-val requestSerializer = RequestSerializer(RequestSerializerBase)
 
-private object RequestSerializerBase : JsonContentPolymorphicSerializer<IRequest>(IRequest::class) {
-    private const val discriminator = "requestType"
+val responseSerializer = ResponseSerializer(ResponseSerializerBase)
 
-    override fun selectDeserializer(element: JsonElement): KSerializer<out IRequest> {
+private object ResponseSerializerBase : JsonContentPolymorphicSerializer<IResponse>(IResponse::class) {
+    private const val discriminator = "responseType"
+
+    override fun selectDeserializer(element: JsonElement): KSerializer<out IResponse> {
 
         val discriminatorValue = element.jsonObject[discriminator]?.jsonPrimitive?.content
-        return IRequestStrategy.membersByDiscriminator[discriminatorValue]?.serializer
+        return IResponseStrategy.membersByDiscriminator[discriminatorValue]?.serializer
             ?: throw SerializationException(
                 "Unknown value '${discriminatorValue}' in discriminator '$discriminator' " +
-                        "property of ${IRequest::class} implementation"
+                        "property of ${IResponse::class} implementation"
             )
     }
 }
 
-class RequestSerializer<T : IRequest>(private val serializer: KSerializer<T>) : KSerializer<T> by serializer {
+class ResponseSerializer<T : IResponse>(private val serializer: KSerializer<T>) : KSerializer<T> by serializer {
     override fun serialize(encoder: Encoder, value: T) =
-        IRequestStrategy
+        IResponseStrategy
             .membersByClazz[value::class]
             ?.fillDiscriminator(value)
             ?.let { serializer.serialize(encoder, it) }
             ?: throw SerializationException(
-                "Unknown class to serialize as IRequest instance in RequestSerializer"
+                "Unknown class to serialize as IResponse instance in ResponseSerializer"
             )
 }

@@ -1,11 +1,11 @@
-package ru.klekchyan.marketplace
+package ru.klekchyan.quizEngine
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
-import ru.klekchyan.marketplace.api.v1.models.*
+import ru.klekchyan.quizEngine.api.v1.models.*
 
 @OptIn(ExperimentalSerializationApi::class)
 val apiV1Mapper = Json {

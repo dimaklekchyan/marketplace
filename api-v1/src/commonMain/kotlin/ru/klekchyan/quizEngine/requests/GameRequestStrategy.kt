@@ -1,6 +1,6 @@
-package ru.klekchyan.marketplace.requests
+package ru.klekchyan.quizEngine.requests
 
-import ru.klekchyan.marketplace.api.v1.models.*
+import ru.klekchyan.quizEngine.api.v1.models.*
 
 val createGameRequestStrategy = IRequestStrategy.create<GameCreateRequest>(
     discriminator = "createGame",

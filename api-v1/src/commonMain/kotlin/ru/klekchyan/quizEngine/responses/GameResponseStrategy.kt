@@ -1,6 +1,6 @@
-package ru.klekchyan.marketplace.responses
+package ru.klekchyan.quizEngine.responses
 
-import ru.klekchyan.marketplace.api.v1.models.*
+import ru.klekchyan.quizEngine.api.v1.models.*
 
 val createGameResponseStrategy = IResponseStrategy.create<GameCreateResponse>(
     discriminator = "createGame",

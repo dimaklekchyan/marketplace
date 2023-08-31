@@ -1,4 +1,4 @@
-package ru.klekchyan.marketplace
+package ru.klekchyan.quizEngine
 
 import kotlinx.serialization.KSerializer
 import kotlin.reflect.KClass
