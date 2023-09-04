@@ -3,11 +3,10 @@ package ru.klekchyan.quizEngine.models
 import kotlin.jvm.JvmInline
 
 @JvmInline
-value class QuizGameId(val id: Int) {
-
+value class QuizRoundId(private val id: Int) {
     fun asString() = id.toString()
 
     companion object {
-        val NONE = QuizGameId(0)
+        val NONE = QuizRoundId(0)
     }
 }

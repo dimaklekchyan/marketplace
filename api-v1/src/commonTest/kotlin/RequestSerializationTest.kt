@@ -13,7 +13,7 @@ class RequestSerializationTest {
             mode = RequestDebugMode.STUB,
             stub = QuestionRequestDebugStubs.BAD_ANSWERS
         ),
-        question = BaseQuestion(
+        question = QuestionCreateObject(
             questionType = QuestionType.MULTIPLE_OPTIONS_QUESTION,
             gameId = 0,
             roundId = 0,
@@ -30,7 +30,7 @@ class RequestSerializationTest {
             mode = RequestDebugMode.STUB,
             stub = GameRequestDebugStubs.SUCCESS
         ),
-        game = BaseGame(
+        game = GameCreateObject(
             title = "Game",
             description = "description"
         )
