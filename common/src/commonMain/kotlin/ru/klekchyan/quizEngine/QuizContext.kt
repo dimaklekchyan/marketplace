@@ -16,9 +16,17 @@ data class QuizContext(
     var timeStart: Instant = Instant.NONE,
 
     var gameRequest: QuizGame = QuizGame(),
+    var gameResponse: QuizGame = QuizGame(),
     var gamesSelectorRequest: QuizGamesSelector = QuizGamesSelector(),
+    var gamesResponse: MutableList<QuizGame> = mutableListOf(),
+
     var roundRequest: QuizRound = QuizRound(),
+    var roundResponse: QuizRound = QuizRound(),
     var roundsSelectorRequest: QuizRoundsSelector = QuizRoundsSelector(),
+    var roundsResponse: MutableList<QuizRound> = mutableListOf(),
+
     var questionRequest: QuizQuestion = QuizQuestion(),
+    var questionResponse: QuizQuestion = QuizQuestion(),
     var questionsSelectorRequest: QuizQuestionsSelector = QuizQuestionsSelector(),
+    var questionsResponse: MutableList<QuizQuestion> = mutableListOf(),
 )

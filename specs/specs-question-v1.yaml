@@ -431,9 +431,6 @@ components:
     BaseGame:
       type: object
       description: Базовый класс игры
-      required:
-        - title
-        - description
       properties:
         title:
           type: string
@@ -445,10 +442,6 @@ components:
     BaseRound:
       type: object
       description: Базовый класс раунда
-      required:
-        - gameId
-        - title
-        - description
       properties:
         gameId:
           type: integer
@@ -463,11 +456,6 @@ components:
     BaseQuestion:
       type: object
       description: Базовый класс вопроса
-      required:
-        - questionType
-        - gameId
-        - roundId
-        - formulation
       properties:
         questionType:
           $ref: '#/components/schemas/QuestionType'
@@ -503,9 +491,6 @@ components:
     QuestionAnswer:
       type: object
       description: Вариант ответа на вопрос
-      required:
-        - formulation
-        - isRight
       properties:
         formulation:
           type: string
@@ -517,9 +502,6 @@ components:
     QuestionMatchingTerm:
       type: object
       description: Элемент для сопоставления
-      required:
-        - term
-        - definition
       properties:
         term:
           type: string
@@ -584,8 +566,6 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/GameRequestDebug'
         - type: object
-          required:
-            - game
           properties:
             game:
               $ref: '#/components/schemas/GameReadObject'
@@ -602,8 +582,6 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/RoundRequestDebug'
         - type: object
-          required:
-            - round
           properties:
             round:
               $ref: '#/components/schemas/RoundReadObject'
@@ -620,8 +598,6 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/QuestionRequestDebug'
         - type: object
-          required:
-            - question
           properties:
             question:
               $ref: '#/components/schemas/QuestionReadObject'
@@ -638,8 +614,6 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/GameRequestDebug'
         - type: object
-          required:
-            - game
           properties:
             game:
               $ref: '#/components/schemas/GameUpdateObject'
@@ -659,8 +633,6 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/RoundRequestDebug'
         - type: object
-          required:
-            - round
           properties:
             round:
               $ref: '#/components/schemas/RoundUpdateObject'
@@ -680,8 +652,6 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/QuestionRequestDebug'
         - type: object
-          required:
-            - question
           properties:
             question:
               $ref: '#/components/schemas/QuestionUpdateObject'
@@ -701,8 +671,6 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/GameRequestDebug'
         - type: object
-          required:
-            - game
           properties:
             game:
               $ref: '#/components/schemas/GameDeleteObject'
@@ -721,8 +689,6 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/RoundRequestDebug'
         - type: object
-          required:
-            - round
           properties:
             round:
               $ref: '#/components/schemas/RoundDeleteObject'
@@ -741,8 +707,6 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/QuestionRequestDebug'
         - type: object
-          required:
-            - question
           properties:
             question:
               $ref: '#/components/schemas/QuestionDeleteObject'
@@ -761,8 +725,6 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/GameRequestDebug'
         - type: object
-          required:
-            - selector
           properties:
             selector:
               $ref: '#/components/schemas/GamesSelector'
@@ -775,8 +737,6 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/RoundRequestDebug'
         - type: object
-          required:
-            - selector
           properties:
             selector:
               $ref: '#/components/schemas/RoundsSelector'
@@ -784,8 +744,6 @@ components:
     RoundsSelector:
       allOf:
         - type: object
-          required:
-            - gameId
           properties:
             gameId:
               $ref: '#/components/schemas/GameId'
@@ -795,8 +753,6 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/QuestionRequestDebug'
         - type: object
-          required:
-            - selector
           properties:
             selector:
               $ref: '#/components/schemas/QuestionsSelector'
@@ -804,9 +760,6 @@ components:
     QuestionsSelector:
       allOf:
         - type: object
-          required:
-            - gameId
-            - roundId
           properties:
             gameId:
               $ref: '#/components/schemas/GameId'

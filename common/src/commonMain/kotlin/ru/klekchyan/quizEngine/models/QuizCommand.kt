@@ -16,5 +16,5 @@ enum class QuizCommand {
     DELETE_QUESTION,
     READ_ALL_GAMES,
     READ_ALL_ROUNDS,
-    READ_ALL_QUESTION,
+    READ_ALL_QUESTIONS,
 }

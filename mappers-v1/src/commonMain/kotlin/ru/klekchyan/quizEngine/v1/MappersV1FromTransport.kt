@@ -98,7 +98,7 @@ fun QuizContext.fromTransport(request: QuestionCreateRequest) {
 fun QuizContext.fromTransport(request: GameReadRequest) {
     command = QuizCommand.READ_GAME
     requestId = request.requestId()
-    gameRequest = request.game.gameId.toGameWithId()
+    gameRequest = request.game?.gameId.toGameWithId()
     workMode = request.debug?.mode.transportToWorkMode()
     stubCase = request.debug?.stub.transportToStubCase()
 }
@@ -106,7 +106,7 @@ fun QuizContext.fromTransport(request: GameReadRequest) {
 fun QuizContext.fromTransport(request: RoundReadRequest) {
     command = QuizCommand.READ_ROUND
     requestId = request.requestId()
-    roundRequest = request.round.roundId.toRoundWithId()
+    roundRequest = request.round?.roundId.toRoundWithId()
     workMode = request.debug?.mode.transportToWorkMode()
     stubCase = request.debug?.stub.transportToStubCase()
 }
@@ -114,7 +114,7 @@ fun QuizContext.fromTransport(request: RoundReadRequest) {
 fun QuizContext.fromTransport(request: QuestionReadRequest) {
     command = QuizCommand.READ_QUESTION
     requestId = request.requestId()
-    questionRequest = request.question.questionId.toQuestionWithId()
+    questionRequest = request.question?.questionId.toQuestionWithId()
     workMode = request.debug?.mode.transportToWorkMode()
     stubCase = request.debug?.stub.transportToStubCase()
 }
@@ -122,7 +122,7 @@ fun QuizContext.fromTransport(request: QuestionReadRequest) {
 fun QuizContext.fromTransport(request: GameUpdateRequest) {
     command = QuizCommand.UPDATE_GAME
     requestId = request.requestId()
-    gameRequest = request.game.toInternal()
+    gameRequest = request.game?.toInternal() ?: QuizGame()
     workMode = request.debug?.mode.transportToWorkMode()
     stubCase = request.debug?.stub.transportToStubCase()
 }
@@ -130,7 +130,7 @@ fun QuizContext.fromTransport(request: GameUpdateRequest) {
 fun QuizContext.fromTransport(request: RoundUpdateRequest) {
     command = QuizCommand.UPDATE_ROUND
     requestId = request.requestId()
-    roundRequest = request.round.toInternal()
+    roundRequest = request.round?.toInternal() ?: QuizRound()
     workMode = request.debug?.mode.transportToWorkMode()
     stubCase = request.debug?.stub.transportToStubCase()
 }
@@ -138,7 +138,7 @@ fun QuizContext.fromTransport(request: RoundUpdateRequest) {
 fun QuizContext.fromTransport(request: QuestionUpdateRequest) {
     command = QuizCommand.UPDATE_QUESTION
     requestId = request.requestId()
-    questionRequest = request.question.toInternal()
+    questionRequest = request.question?.toInternal() ?: QuizQuestion()
     workMode = request.debug?.mode.transportToWorkMode()
     stubCase = request.debug?.stub.transportToStubCase()
 }
@@ -146,7 +146,7 @@ fun QuizContext.fromTransport(request: QuestionUpdateRequest) {
 fun QuizContext.fromTransport(request: GameDeleteRequest) {
     command = QuizCommand.DELETE_GAME
     requestId = request.requestId()
-    gameRequest = request.game.gameId.toGameWithId()
+    gameRequest = request.game?.gameId.toGameWithId()
     workMode = request.debug?.mode.transportToWorkMode()
     stubCase = request.debug?.stub.transportToStubCase()
 }
@@ -154,7 +154,7 @@ fun QuizContext.fromTransport(request: GameDeleteRequest) {
 fun QuizContext.fromTransport(request: RoundDeleteRequest) {
     command = QuizCommand.DELETE_ROUND
     requestId = request.requestId()
-    roundRequest = request.round.roundId.toRoundWithId()
+    roundRequest = request.round?.roundId.toRoundWithId()
     workMode = request.debug?.mode.transportToWorkMode()
     stubCase = request.debug?.stub.transportToStubCase()
 }
@@ -162,7 +162,7 @@ fun QuizContext.fromTransport(request: RoundDeleteRequest) {
 fun QuizContext.fromTransport(request: QuestionDeleteRequest) {
     command = QuizCommand.DELETE_QUESTION
     requestId = request.requestId()
-    questionRequest = request.question.questionId.toQuestionWithId()
+    questionRequest = request.question?.questionId.toQuestionWithId()
     workMode = request.debug?.mode.transportToWorkMode()
     stubCase = request.debug?.stub.transportToStubCase()
 }
@@ -178,48 +178,48 @@ fun QuizContext.fromTransport(request: GameReadAllRequest) {
 fun QuizContext.fromTransport(request: RoundReadAllRequest) {
     command = QuizCommand.READ_ALL_ROUNDS
     requestId = request.requestId()
-    roundsSelectorRequest = request.selector.toInternal()
+    roundsSelectorRequest = request.selector?.toInternal() ?: QuizRoundsSelector()
     workMode = request.debug?.mode.transportToWorkMode()
     stubCase = request.debug?.stub.transportToStubCase()
 }
 
 fun QuizContext.fromTransport(request: QuestionReadAllRequest) {
-    command = QuizCommand.READ_ALL_QUESTION
+    command = QuizCommand.READ_ALL_QUESTIONS
     requestId = request.requestId()
-    questionsSelectorRequest = request.selector.toInternal()
+    questionsSelectorRequest = request.selector?.toInternal() ?: QuizQuestionsSelector()
     workMode = request.debug?.mode.transportToWorkMode()
     stubCase = request.debug?.stub.transportToStubCase()
 }
 
 private fun GameCreateObject.toInternal() = QuizGame(
-    title = title,
-    description = description
+    title = title ?: "",
+    description = description ?: ""
 )
 
 private fun GameUpdateObject.toInternal() = QuizGame(
     id = id.toGameId(),
-    title = title,
-    description = description
+    title = title ?: "",
+    description = description ?: ""
 )
 
 private fun RoundCreateObject.toInternal() = QuizRound(
     gameId = gameId.toGameId(),
-    title = title,
-    description = description
+    title = title ?: "",
+    description = description ?: ""
 )
 
 private fun RoundUpdateObject.toInternal() = QuizRound(
     id = id.toRoundId(),
     gameId = gameId.toGameId(),
-    title = title,
-    description = description
+    title = title ?: "",
+    description = description ?: ""
 )
 
 private fun QuestionCreateObject.toInternal() = QuizQuestion(
     gameId = gameId.toGameId(),
     roundId = roundId.toRoundId(),
     type = questionType.toInternal(),
-    formulation = formulation,
+    formulation = formulation ?: "",
     answers = answers?.map { it.toInternal() }?.toMutableList() ?: mutableListOf(),
     matchingTerms = matchingTerms?.map { it.toInternal() }?.toMutableList() ?: mutableListOf()
 )
@@ -229,7 +229,7 @@ private fun QuestionUpdateObject.toInternal() = QuizQuestion(
     gameId = gameId.toGameId(),
     roundId = roundId.toRoundId(),
     type = questionType.toInternal(),
-    formulation = formulation,
+    formulation = formulation ?: "",
     answers = answers?.map { it.toInternal() }?.toMutableList() ?: mutableListOf(),
     matchingTerms = matchingTerms?.map { it.toInternal() }?.toMutableList() ?: mutableListOf()
 )
@@ -243,18 +243,19 @@ private fun QuestionsSelector.toInternal() = QuizQuestionsSelector(
     roundId = roundId.toRoundId()
 )
 
-private fun QuestionType.toInternal() = when(this) {
+private fun QuestionType?.toInternal() = when(this) {
     QuestionType.OPEN_QUESTION -> QuizQuestionType.OPEN_QUESTION
     QuestionType.MULTIPLE_OPTIONS_QUESTION -> QuizQuestionType.MULTIPLE_OPTIONS_QUESTION
     QuestionType.MATCHING_TERMS_QUESTION -> QuizQuestionType.MATCHING_TERMS_QUESTION
+    else -> QuizQuestionType.NONE
 }
 
 private fun QuestionAnswer.toInternal() = QuizQuestionAnswer(
-    formulation = formulation,
-    isRight = isRight
+    formulation = formulation ?: "",
+    isRight = isRight ?: false
 )
 
 private fun QuestionMatchingTerm.toInternal() = QuizQuestionMatchingTerm(
-    term = term,
-    definition = definition
+    term = term ?: "",
+    definition = definition ?: ""
 )
