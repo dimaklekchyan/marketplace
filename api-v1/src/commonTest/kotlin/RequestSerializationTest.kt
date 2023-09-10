@@ -1,6 +1,6 @@
-import ru.klekchyan.marketplace.apiV1RequestDeserialize
-import ru.klekchyan.marketplace.apiV1RequestSerialize
-import ru.klekchyan.marketplace.api.v1.models.*
+import ru.klekchyan.quizEngine.apiV1RequestDeserialize
+import ru.klekchyan.quizEngine.apiV1RequestSerialize
+import ru.klekchyan.quizEngine.api.v1.models.*
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
@@ -13,7 +13,7 @@ class RequestSerializationTest {
             mode = RequestDebugMode.STUB,
             stub = QuestionRequestDebugStubs.BAD_ANSWERS
         ),
-        question = BaseQuestion(
+        question = QuestionCreateObject(
             questionType = QuestionType.MULTIPLE_OPTIONS_QUESTION,
             gameId = 0,
             roundId = 0,
@@ -30,7 +30,7 @@ class RequestSerializationTest {
             mode = RequestDebugMode.STUB,
             stub = GameRequestDebugStubs.SUCCESS
         ),
-        game = BaseGame(
+        game = GameCreateObject(
             title = "Game",
             description = "description"
         )

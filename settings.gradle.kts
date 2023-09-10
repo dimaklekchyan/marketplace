@@ -1,5 +1,5 @@
 
-rootProject.name = "marketplace"
+rootProject.name = "quizEngine"
 
 pluginManagement {
     pluginManagement {
@@ -23,3 +23,5 @@ pluginManagement {
 //include("m1l5-coroutines")
 include("acceptance")
 include("api-v1")
+include("common")
+include("mappers-v1")

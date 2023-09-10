@@ -1,0 +1,20 @@
+package ru.klekchyan.quizEngine.models
+
+enum class QuizCommand {
+    NONE,
+    CREATE_GAME,
+    CREATE_ROUND,
+    CREATE_QUESTION,
+    READ_GAME,
+    READ_ROUND,
+    READ_QUESTION,
+    UPDATE_GAME,
+    UPDATE_ROUND,
+    UPDATE_QUESTION,
+    DELETE_GAME,
+    DELETE_ROUND,
+    DELETE_QUESTION,
+    READ_ALL_GAMES,
+    READ_ALL_ROUNDS,
+    READ_ALL_QUESTIONS,
+}

@@ -431,9 +431,6 @@ components:
     BaseGame:
       type: object
       description: Базовый класс игры
-      required:
-        - title
-        - description
       properties:
         title:
           type: string
@@ -442,24 +439,9 @@ components:
           type: string
           description: Описание игры
 
-    GameResponseObject:
-      allOf:
-        - $ref: '#/components/schemas/BaseGame'
-        - type: object
-          description: Игра с id
-          properties:
-            id:
-              $ref: '#/components/schemas/GameId'
-            lock:
-              $ref: '#/components/schemas/Lock'
-
     BaseRound:
       type: object
       description: Базовый класс раунда
-      required:
-        - gameId
-        - title
-        - description
       properties:
         gameId:
           type: integer
@@ -471,25 +453,9 @@ components:
           type: string
           description: Описание раунд
 
-    RoundResponseObject:
-      allOf:
-        - $ref: '#/components/schemas/BaseRound'
-        - type: object
-          description: Раунд с id
-          properties:
-            id:
-              $ref: '#/components/schemas/RoundId'
-            lock:
-              $ref: '#/components/schemas/Lock'
-
     BaseQuestion:
       type: object
       description: Базовый класс вопроса
-      required:
-        - questionType
-        - gameId
-        - roundId
-        - formulation
       properties:
         questionType:
           $ref: '#/components/schemas/QuestionType'
@@ -513,17 +479,6 @@ components:
           items:
             $ref: '#/components/schemas/QuestionMatchingTerm'
 
-    QuestionResponseObject:
-      allOf:
-        - $ref: '#/components/schemas/BaseQuestion'
-        - type: object
-          description: Вопрос с id
-          properties:
-            id:
-              $ref: '#/components/schemas/QuestionId'
-            lock:
-              $ref: '#/components/schemas/Lock'
-
     QuestionType:
       type: string
       description: Тип вопроса
@@ -536,9 +491,6 @@ components:
     QuestionAnswer:
       type: object
       description: Вариант ответа на вопрос
-      required:
-        - formulation
-        - isRight
       properties:
         formulation:
           type: string
@@ -550,9 +502,6 @@ components:
     QuestionMatchingTerm:
       type: object
       description: Элемент для сопоставления
-      required:
-        - term
-        - definition
       properties:
         term:
           type: string
@@ -580,7 +529,11 @@ components:
         - type: object
           properties:
             game:
-              $ref: '#/components/schemas/BaseGame'
+              $ref: '#/components/schemas/GameCreateObject'
+
+    GameCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseGame'
 
     RoundCreateRequest:
       allOf:
@@ -589,7 +542,11 @@ components:
         - type: object
           properties:
             round:
-              $ref: '#/components/schemas/BaseRound'
+              $ref: '#/components/schemas/RoundCreateObject'
+
+    RoundCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseRound'
 
     QuestionCreateRequest:
       allOf:
@@ -598,15 +555,24 @@ components:
         - type: object
           properties:
             question:
-              $ref: '#/components/schemas/BaseQuestion'
+              $ref: '#/components/schemas/QuestionCreateObject'
+
+    QuestionCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseQuestion'
 
     GameReadRequest:
       allOf:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/GameRequestDebug'
         - type: object
-          required:
-            - gameId
+          properties:
+            game:
+              $ref: '#/components/schemas/GameReadObject'
+
+    GameReadObject:
+      allOf:
+        - type: object
           properties:
             gameId:
               $ref: '#/components/schemas/GameId'
@@ -616,8 +582,13 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/RoundRequestDebug'
         - type: object
-          required:
-            - roundId
+          properties:
+            round:
+              $ref: '#/components/schemas/RoundReadObject'
+
+    RoundReadObject:
+      allOf:
+        - type: object
           properties:
             roundId:
               $ref: '#/components/schemas/RoundId'
@@ -627,8 +598,13 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/QuestionRequestDebug'
         - type: object
-          required:
-            - questionId
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionReadObject'
+
+    QuestionReadObject:
+      allOf:
+        - type: object
           properties:
             questionId:
               $ref: '#/components/schemas/QuestionId'
@@ -638,12 +614,15 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/GameRequestDebug'
         - type: object
-          required:
-            - game
-            - id
           properties:
             game:
-              $ref: '#/components/schemas/BaseGame'
+              $ref: '#/components/schemas/GameUpdateObject'
+
+    GameUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseGame'
+        - type: object
+          properties:
             id:
               $ref: '#/components/schemas/GameId'
             lock:
@@ -654,12 +633,15 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/RoundRequestDebug'
         - type: object
-          required:
-            - round
-            - id
           properties:
             round:
-              $ref: '#/components/schemas/BaseRound'
+              $ref: '#/components/schemas/RoundUpdateObject'
+
+    RoundUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseRound'
+        - type: object
+          properties:
             id:
               $ref: '#/components/schemas/RoundId'
             lock:
@@ -670,12 +652,15 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/QuestionRequestDebug'
         - type: object
-          required:
-            - question
-            - id
           properties:
             question:
-              $ref: '#/components/schemas/BaseQuestion'
+              $ref: '#/components/schemas/QuestionUpdateObject'
+
+    QuestionUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseQuestion'
+        - type: object
+          properties:
             id:
               $ref: '#/components/schemas/QuestionId'
             lock:
@@ -686,8 +671,13 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/GameRequestDebug'
         - type: object
-          required:
-            - gameId
+          properties:
+            game:
+              $ref: '#/components/schemas/GameDeleteObject'
+
+    GameDeleteObject:
+      allOf:
+        - type: object
           properties:
             gameId:
               $ref: '#/components/schemas/GameId'
@@ -699,8 +689,13 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/RoundRequestDebug'
         - type: object
-          required:
-            - roundId
+          properties:
+            round:
+              $ref: '#/components/schemas/RoundDeleteObject'
+
+    RoundDeleteObject:
+      allOf:
+        - type: object
           properties:
             roundId:
               $ref: '#/components/schemas/RoundId'
@@ -712,8 +707,13 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/QuestionRequestDebug'
         - type: object
-          required:
-            - questionId
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionDeleteObject'
+
+    QuestionDeleteObject:
+      allOf:
+        - type: object
           properties:
             questionId:
               $ref: '#/components/schemas/QuestionId'
@@ -725,14 +725,25 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/GameRequestDebug'
         - type: object
+          properties:
+            selector:
+              $ref: '#/components/schemas/GamesSelector'
+
+    GamesSelector:
+      type: object
 
     RoundReadAllRequest:
       allOf:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/RoundRequestDebug'
         - type: object
-          required:
-            - gameId
+          properties:
+            selector:
+              $ref: '#/components/schemas/RoundsSelector'
+
+    RoundsSelector:
+      allOf:
+        - type: object
           properties:
             gameId:
               $ref: '#/components/schemas/GameId'
@@ -742,9 +753,13 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/QuestionRequestDebug'
         - type: object
-          required:
-            - gameId
-            - roundId
+          properties:
+            selector:
+              $ref: '#/components/schemas/QuestionsSelector'
+
+    QuestionsSelector:
+      allOf:
+        - type: object
           properties:
             gameId:
               $ref: '#/components/schemas/GameId'
@@ -752,6 +767,17 @@ components:
               $ref: '#/components/schemas/RoundId'
 
     # Responses
+
+    GameResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseGame'
+        - type: object
+          description: Игра с id
+          properties:
+            id:
+              $ref: '#/components/schemas/GameId'
+            lock:
+              $ref: '#/components/schemas/Lock'
 
     GameResponseSingle:
       allOf:
@@ -771,6 +797,17 @@ components:
               items:
                 $ref: '#/components/schemas/GameResponseObject'
 
+    RoundResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseRound'
+        - type: object
+          description: Раунд с id
+          properties:
+            id:
+              $ref: '#/components/schemas/RoundId'
+            lock:
+              $ref: '#/components/schemas/Lock'
+
     RoundResponseSingle:
       allOf:
         - type: object
@@ -788,6 +825,17 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/RoundResponseObject'
+
+    QuestionResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseQuestion'
+        - type: object
+          description: Вопрос с id
+          properties:
+            id:
+              $ref: '#/components/schemas/QuestionId'
+            lock:
+              $ref: '#/components/schemas/Lock'
 
     QuestionResponseSingle:
       allOf:

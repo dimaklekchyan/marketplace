@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm") apply false
 }
 
-group = "ru.klekchyan.marketplace"
+group = "ru.klekchyan.quizEngine"
 version = "1.0-SNAPSHOT"
 
 repositories {
