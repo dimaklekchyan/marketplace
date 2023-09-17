@@ -18,7 +18,11 @@ class QuizProcessor {
                 ctx.questionResponse = QuizQuestionStub.get()
             }
             QuizCommand.READ_ALL_QUESTIONS -> {
-                ctx.questionsResponse.addAll(QuizQuestionStub.prepareQuestionsList(1, 1))
+                val questions = QuizQuestionStub.prepareQuestionsList(
+                    gameId = ctx.questionsSelectorRequest.gameId.asInt(),
+                    roundId = ctx.questionsSelectorRequest.roundId.asInt()
+                )
+                ctx.questionsResponse.addAll(questions)
             }
             else -> {
                 throw IllegalArgumentException("Not yet implemented context command: ${ctx.command}")

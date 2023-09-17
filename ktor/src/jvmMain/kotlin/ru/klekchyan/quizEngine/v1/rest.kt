@@ -10,4 +10,24 @@ fun Route.v1Question(processor: QuizProcessor) {
             call.createQuestion(processor)
         }
     }
+    route("question") {
+        post("read") {
+            call.readQuestion(processor)
+        }
+    }
+    route("question") {
+        post("update") {
+            call.updateQuestion(processor)
+        }
+    }
+    route("question") {
+        post("delete") {
+            call.deleteQuestion(processor)
+        }
+    }
+    route("question") {
+        post("readAll") {
+            call.readAllQuestion(processor)
+        }
+    }
 }
