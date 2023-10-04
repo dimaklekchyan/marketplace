@@ -1,0 +1,406 @@
+openapi: 3.0.0
+info:
+  title: "Quiz engine"
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/questions
+tags:
+  - name: question
+    description: Вопрос
+paths:
+  /v1/create:
+    post:
+      tags:
+        - question
+      summary: Create question
+      operationId: questionCreate
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionCreateResponse'
+
+  /v1/read:
+    post:
+      tags:
+        - question
+      summary: Read question
+      operationId: questionRead
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionReadResponse'
+
+  /v1/update:
+    post:
+      tags:
+        - question
+      summary: Update question
+      operationId: questionUpdate
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionUpdateResponse'
+
+  /v1/delete:
+    post:
+      tags:
+        - question
+      summary: Delete question
+      operationId: questionDelete
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionDeleteResponse'
+
+  /v1/readAll:
+    post:
+      tags:
+        - question
+      summary: Read all questions
+      operationId: questionReadAll
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionReadAllRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionReadAllResponse'
+
+components:
+  schemas:
+
+    IRequestQuestion:
+      allOf:
+        - $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/QuestionRequestDebug'
+        - type: object
+          discriminator:
+            propertyName: requestType
+            mapping:
+              create: '#/components/schemas/QuestionCreateRequest'
+              read: '#/components/schemas/QuestionReadRequest'
+              update: '#/components/schemas/QuestionUpdateRequest'
+              delete: '#/components/schemas/QuestionDeleteRequest'
+              readAll: '#/components/schemas/QuestionReadAllRequest'
+
+    IResponseQuestion:
+      allOf:
+        - $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/IResponse'
+        - type: object
+          discriminator:
+            propertyName: responseType
+            mapping:
+              create: '#/components/schemas/QuestionCreateResponse'
+              read: '#/components/schemas/QuestionReadResponse'
+              update: '#/components/schemas/QuestionUpdateResponse'
+              delete: '#/components/schemas/QuestionDeleteResponse'
+              readAll: '#/components/schemas/QuestionReadAllResponse'
+
+    BaseQuestion:
+      type: object
+      description: Базовый класс вопроса
+      properties:
+        gameId:
+          $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+        roundId:
+          $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+        questionType:
+          $ref: '#/components/schemas/QuestionType'
+        formulation:
+          type: string
+          description: Формулировка вопроса
+        answers:
+          type: array
+          description: Варианты ответов
+          items:
+            $ref: '#/components/schemas/QuestionAnswer'
+        matchingTerms:
+          type: array
+          description: Элементы для сопоставления
+          items:
+            $ref: '#/components/schemas/QuestionMatchingTerm'
+
+    QuestionType:
+      type: string
+      description: Тип вопроса
+      example: openQuestion
+      enum:
+        - openQuestion
+        - multipleOptionsQuestion
+        - matchingTermsQuestion
+
+    QuestionAnswer:
+      type: object
+      description: Вариант ответа на вопрос
+      required:
+        - formulation
+        - isRight
+      properties:
+        formulation:
+          type: string
+          description: Формулировка ответа
+        isRight:
+          type: boolean
+          description: Флаг правильности ответа
+
+    QuestionMatchingTerm:
+      type: object
+      description: Элемент для сопоставления
+      required:
+        - term
+        - definition
+      properties:
+        term:
+          type: string
+          description: Термин/понятие/сущность
+        definition:
+          type: string
+          description: Определение
+
+    #  Requests
+
+    QuestionCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseQuestion'
+
+    QuestionCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestQuestion'
+        - type: object
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionCreateObject'
+
+    QuestionReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+
+    QuestionReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestQuestion'
+        - type: object
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionReadObject'
+
+    QuestionUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseQuestion'
+        - type: object
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+            lock:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonLock'
+
+    QuestionUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestQuestion'
+        - type: object
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionUpdateObject'
+
+    QuestionDeleteObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+            lock:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonLock'
+
+    QuestionDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestQuestion'
+        - type: object
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionDeleteObject'
+
+    QuestionsSelector:
+      type: object
+      description: Параметры выборки вопросов
+      properties:
+        gameId:
+          $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+        roundId:
+          $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+
+    QuestionReadAllRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestQuestion'
+        - type: object
+          properties:
+            selector:
+              $ref: '#/components/schemas/QuestionsSelector'
+
+    # Responses
+
+    QuestionResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseQuestion'
+        - type: object
+          description: Вопрос с id
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+            lock:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonLock'
+
+    QuestionResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ бекенда с одним вопросом
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionResponseObject'
+
+    QuestionResponseMulti:
+      allOf:
+        - type: object
+          description: Ответ бекенда с множеством вопросов
+          properties:
+            questions:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuestionResponseObject'
+
+    QuestionCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseQuestion'
+        - $ref: '#/components/schemas/QuestionResponseSingle'
+
+    QuestionReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseQuestion'
+        - $ref: '#/components/schemas/QuestionResponseSingle'
+
+    QuestionUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseQuestion'
+        - $ref: '#/components/schemas/QuestionResponseSingle'
+
+    QuestionDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseQuestion'
+        - $ref: '#/components/schemas/QuestionResponseSingle'
+
+    QuestionReadAllResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseQuestion'
+        - $ref: '#/components/schemas/QuestionResponseMulti'
+
+
+    # STUBS ======================
+    QuestionRequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    QuestionRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/QuestionDebug'
+
+    QuestionDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/QuestionRequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/QuestionRequestDebugStubs'
+
+    QuestionRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+        - badFormulation
+        - badAnswers
+        - badTerms
+        - badRoundId
+        - badGameId

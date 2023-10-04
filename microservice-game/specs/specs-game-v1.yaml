@@ -1,0 +1,341 @@
+openapi: 3.0.0
+info:
+  title: "Quiz engine"
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/games
+tags:
+  - name: game
+    description: Вопрос
+paths:
+  /v1/create:
+    post:
+      tags:
+        - game
+      summary: Create Game
+      operationId: gameCreate
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameCreateResponse'
+
+  /v1/read:
+    post:
+      tags:
+        - game
+      summary: Read game
+      operationId: gameRead
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameReadResponse'
+
+  /v1/update:
+    post:
+      tags:
+        - game
+      summary: Update game
+      operationId: gameUpdate
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameUpdateResponse'
+
+  /v1/delete:
+    post:
+      tags:
+        - game
+      summary: Delete game
+      operationId: gameDelete
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameDeleteResponse'
+
+  /v1/readAll:
+    post:
+      tags:
+        - game
+      summary: Read all games
+      operationId: gameReadAll
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameReadAllRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameReadAllResponse'
+
+components:
+  schemas:
+
+    IRequestGame:
+      allOf:
+        - $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/GameRequestDebug'
+        - type: object
+          discriminator:
+            propertyName: requestType
+            mapping:
+              create: '#/components/schemas/GameCreateRequest'
+              read: '#/components/schemas/GameReadRequest'
+              update: '#/components/schemas/GameUpdateRequest'
+              delete: '#/components/schemas/GameDeleteRequest'
+              readAll: '#/components/schemas/GameReadAllRequest'
+
+    IResponseGame:
+      allOf:
+        - $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/IResponse'
+        - type: object
+          discriminator:
+            propertyName: responseType
+            mapping:
+              create: '#/components/schemas/GameCreateResponse'
+              read: '#/components/schemas/GameReadResponse'
+              update: '#/components/schemas/GameUpdateResponse'
+              delete: '#/components/schemas/GameDeleteResponse'
+              readAll: '#/components/schemas/GameReadAllResponse'
+
+    BaseGame:
+      type: object
+      description: Базовый класс игры
+      properties:
+        title:
+          type: string
+          description: Название игры
+        description:
+          type: string
+          description: Описание игры
+
+    #  Requests
+
+    GameCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseGame'
+
+    GameCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestGame'
+        - type: object
+          properties:
+            game:
+              $ref: '#/components/schemas/GameCreateObject'
+
+    GameReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+
+    GameReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestGame'
+        - type: object
+          properties:
+            game:
+              $ref: '#/components/schemas/GameReadObject'
+
+    GameUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseGame'
+        - type: object
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+            lock:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonLock'
+
+    GameUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestGame'
+        - type: object
+          properties:
+            game:
+              $ref: '#/components/schemas/GameUpdateObject'
+
+    GameDeleteObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+            lock:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonLock'
+
+    GameDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestGame'
+        - type: object
+          properties:
+            game:
+              $ref: '#/components/schemas/GameDeleteObject'
+
+    GameReadAllRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestGame'
+        - type: object
+
+    # Responses
+
+    GameResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseGame'
+        - type: object
+          description: Игра с id
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+            lock:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonLock'
+
+    GameResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ бекенда с одной игрой
+          properties:
+            game:
+              $ref: '#/components/schemas/GameResponseObject'
+
+    GameResponseMulti:
+      allOf:
+        - type: object
+          description: Ответ бекенда с множеством игр
+          properties:
+            games:
+              type: array
+              items:
+                $ref: '#/components/schemas/GameResponseObject'
+
+    GameCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseGame'
+        - $ref: '#/components/schemas/GameResponseSingle'
+
+    GameReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseGame'
+        - $ref: '#/components/schemas/GameResponseSingle'
+
+    GameUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseGame'
+        - $ref: '#/components/schemas/GameResponseSingle'
+
+    GameDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseGame'
+        - $ref: '#/components/schemas/GameResponseSingle'
+
+    GameReadAllResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseGame'
+        - $ref: '#/components/schemas/GameResponseMulti'
+
+
+    # STUBS ======================
+    GameRequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    GameRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/GameDebug'
+
+    GameDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/GameRequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/GameRequestDebugStubs'
+
+    GameRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+        - badTitle
+        - badDescription

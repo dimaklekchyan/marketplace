@@ -1,0 +1,110 @@
+openapi: 3.0.0
+info:
+  title: "quiz_engine/core"
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+
+paths: {}
+
+components:
+  schemas:
+
+    RequestId:
+      type: string
+      description: A unique request identifier for for the request trace purposes
+
+    UserId:
+      type: string
+      description: A user unique identifier
+
+    CommonEntityId:
+      type: string
+      description: A base identifier for all entities
+
+    CommonLock:
+      type: string
+      description: A version of optimistic blocking
+
+    IRequest:
+      type: object
+      description: A base interface for all requests
+      properties:
+        requestType:
+          type: string
+          description: Descriptor field for defining the request type
+          example: create
+        requestId:
+          $ref: '#/components/schemas/RequestId'
+      discriminator:
+        propertyName: requestType
+
+    IResponse:
+      type: object
+      description: A base interface for all responses
+      properties:
+        responseType:
+          type: string
+          description: Descriptor field for defining the response type
+          example: create
+        requestId:
+          $ref: '#/components/schemas/RequestId'
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      discriminator:
+        propertyName: responseType
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    ResponseResult:
+      type: string
+      enum:
+        - success
+        - error
+
+    RequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    RequestDebugStubs:
+      type: string
+      enum:
+        - success
+        - notFound
+        - badId
+
+    BaseDebug:
+      type: object
+      description: A basic structure describing debug settings
+      properties:
+        mode:
+          $ref: '#/components/schemas/RequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/RequestDebugStubs'
+
+    RequestDebug:
+      type: object
+      description: Debug property for request description
+      properties:
+        debug:
+          $ref: '#/components/schemas/BaseDebug'

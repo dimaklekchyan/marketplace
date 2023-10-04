@@ -1,0 +1,350 @@
+openapi: 3.0.0
+info:
+  title: "Quiz engine"
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/rounds
+tags:
+  - name: round
+    description: Раунд
+paths:
+  /v1/create:
+    post:
+      tags:
+        - round
+      summary: Create round
+      operationId: roundCreate
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoundCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoundCreateResponse'
+
+  /v1/read:
+    post:
+      tags:
+        - round
+      summary: Read round
+      operationId: roundRead
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoundReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoundReadResponse'
+
+  /v1/update:
+    post:
+      tags:
+        - round
+      summary: Update round
+      operationId: roundUpdate
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoundUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoundUpdateResponse'
+
+  /v1/delete:
+    post:
+      tags:
+        - round
+      summary: Delete round
+      operationId: roundDelete
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoundDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoundDeleteResponse'
+
+  /v1/readAll:
+    post:
+      tags:
+        - round
+      summary: Read all rounds
+      operationId: roundReadAll
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoundReadAllRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoundReadAllResponse'
+components:
+  schemas:
+
+    IRequestRound:
+      allOf:
+        - $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RoundRequestDebug'
+        - type: object
+          discriminator:
+            propertyName: requestType
+            mapping:
+              create: '#/components/schemas/RoundCreateRequest'
+              read: '#/components/schemas/RoundReadRequest'
+              update: '#/components/schemas/RoundUpdateRequest'
+              delete: '#/components/schemas/RoundDeleteRequest'
+              readAll: '#/components/schemas/RoundReadAllRequest'
+
+    IResponseRound:
+      allOf:
+        - $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/IResponse'
+        - type: object
+          discriminator:
+            propertyName: responseType
+            mapping:
+              create: '#/components/schemas/RoundCreateResponse'
+              read: '#/components/schemas/RoundReadResponse'
+              update: '#/components/schemas/RoundUpdateResponse'
+              delete: '#/components/schemas/RoundDeleteResponse'
+              readAll: '#/components/schemas/RoundReadAllResponse'
+
+    BaseRound:
+      type: object
+      description: Базовый класс раунда
+      properties:
+        gameId:
+          $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+        title:
+          type: string
+          description: Название раунда
+        description:
+          type: string
+          description: Описание раунд
+
+#  Requests
+
+    RoundCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseRound'
+
+    RoundCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestRound'
+        - type: object
+          properties:
+            round:
+              $ref: '#/components/schemas/RoundCreateObject'
+
+    RoundReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+
+    RoundReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestRound'
+        - type: object
+          properties:
+            round:
+              $ref: '#/components/schemas/RoundReadObject'
+
+    RoundUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseRound'
+        - type: object
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+            lock:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonLock'
+
+    RoundUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestRound'
+        - type: object
+          properties:
+            round:
+              $ref: '#/components/schemas/RoundUpdateObject'
+
+    RoundDeleteObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+            lock:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonLock'
+
+    RoundDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestRound'
+        - type: object
+          properties:
+            round:
+              $ref: '#/components/schemas/RoundDeleteObject'
+
+    RoundsSelector:
+      type: object
+      description: Параметры выборки раундов
+      properties:
+        gameId:
+          $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+
+    RoundReadAllRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestRound'
+        - type: object
+          properties:
+            selector:
+              $ref: '#/components/schemas/RoundsSelector'
+
+    # Responses
+
+    RoundResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseRound'
+        - type: object
+          description: Раунд с id
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+            lock:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonLock'
+
+    RoundResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ бекенда с одним раундом
+          properties:
+            round:
+              $ref: '#/components/schemas/RoundResponseObject'
+
+    RoundResponseMulti:
+      allOf:
+        - type: object
+          description: Ответ бекенда с множеством раундов
+          properties:
+            rounds:
+              type: array
+              items:
+                $ref: '#/components/schemas/RoundResponseObject'
+
+    RoundCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseRound'
+        - $ref: '#/components/schemas/RoundResponseSingle'
+
+    RoundReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseRound'
+        - $ref: '#/components/schemas/RoundResponseSingle'
+
+    RoundUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseRound'
+        - $ref: '#/components/schemas/RoundResponseSingle'
+
+    RoundDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseRound'
+        - $ref: '#/components/schemas/RoundResponseSingle'
+
+    RoundReadAllResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseRound'
+        - $ref: '#/components/schemas/RoundResponseMulti'
+
+    # STUBS ======================
+    RoundRequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    RoundRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/RoundDebug'
+
+    RoundDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/RoundRequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/RoundRequestDebugStubs'
+
+    RoundRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+        - badTitle
