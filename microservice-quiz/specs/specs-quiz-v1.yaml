@@ -1,0 +1,522 @@
+openapi: 3.0.0
+info:
+  title: "Quiz engine"
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/Quizs
+tags:
+  - name: quiz
+paths:
+
+  /v1/init:
+    post:
+      tags:
+        - quiz
+      summary: Init quiz
+      operationId: initQuiz
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuizInitRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizInitResponse'
+
+  /v1/start:
+    post:
+      tags:
+        - quiz
+      summary: Start quiz
+      operationId: startQuiz
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuizStartRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizStartResponse'
+
+  /v1/pause:
+    post:
+      tags:
+        - quiz
+      summary: Pause quiz
+      operationId: pauseQuiz
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuizPauseRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizPauseResponse'
+
+  /v1/finish:
+    post:
+      tags:
+        - quiz
+      summary: Finish quiz
+      operationId: finishQuiz
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuizFinishRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizFinishResponse'
+
+  /v1/next:
+    post:
+      tags:
+        - quiz
+      summary: Next quiz
+      operationId: nextQuiz
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuizNextRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizNextResponse'
+
+  /v1/back:
+    post:
+      tags:
+        - quiz
+      summary: Back quiz
+      operationId: backQuiz
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuizBackRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizBackResponse'
+
+  /v1/join:
+    post:
+      tags:
+        - quiz
+      summary: Join quiz
+      operationId: joinQuiz
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuizJoinRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizJoinResponse'
+
+  /v1/answer:
+    post:
+      tags:
+        - quiz
+      summary: Answer quiz
+      operationId: answerQuiz
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuizAnswerRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizAnswerResponse'
+
+components:
+  schemas:
+
+    IRequestQuiz:
+      allOf:
+        - $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/QuizRequestDebug'
+        - type: object
+          discriminator:
+            propertyName: requestType
+            mapping:
+              init: '#/components/schemas/QuizInitRequest'
+              start: '#/components/schemas/QuizStartRequest'
+              pause: '#/components/schemas/QuizPauseRequest'
+              finish: '#/components/schemas/QuizFinishRequest'
+              next: '#/components/schemas/QuizNextRequest'
+              back: '#/components/schemas/QuizBackRequest'
+              join: '#/components/schemas/QuizJoinRequest'
+              answer: '#/components/schemas/QuizAnswerRequest'
+
+    IResponseQuiz:
+      allOf:
+        - $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/IResponse'
+        - type: object
+          discriminator:
+            propertyName: responseType
+            mapping:
+              init: '#/components/schemas/QuizInitResponse'
+              start: '#/components/schemas/QuizStartResponse'
+              pause: '#/components/schemas/QuizPauseResponse'
+              finish: '#/components/schemas/QuizFinishResponse'
+              next: '#/components/schemas/QuizNextResponse'
+              back: '#/components/schemas/QuizBackResponse'
+              join: '#/components/schemas/QuizJoinResponse'
+              answer: '#/components/schemas/QuizAnswerResponse'
+
+    BaseQuiz:
+      type: object
+      description: Базовый класс квиза
+      properties:
+        gameId:
+          type: string
+          description: Id игры
+        currentRoundId:
+          type: string
+          description: Id текущего раунда
+        currentQuestionId:
+          type: string
+          description: Id текущего вопроса
+        phase:
+          $ref: '#/components/schemas/Phase'
+        participants:
+          type: array
+          description: Участники квиза
+          items:
+            $ref: '#/components/schemas/BaseParticipant'
+
+    Phase:
+      type: string
+      description: Фаза квиза
+      example: initialized
+      enum:
+        - initiation
+        - game
+        - pause
+        - results
+
+    BaseParticipant:
+      type: object
+      description: Класс участника
+      properties:
+        id:
+          $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+        name:
+          type: string
+          description: Название участника
+        score:
+          type: number
+          description: Счет участника
+
+    #  Requests
+
+    QuizInitObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+
+    QuizInitRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestQuiz'
+        - type: object
+          properties:
+            game:
+              $ref: '#/components/schemas/QuizInitObject'
+
+    QuizStartObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+
+    QuizStartRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestQuiz'
+        - type: object
+          properties:
+            quiz:
+              $ref: '#/components/schemas/QuizStartObject'
+
+    QuizPauseObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+
+    QuizPauseRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestQuiz'
+        - type: object
+          properties:
+            quiz:
+              $ref: '#/components/schemas/QuizPauseObject'
+
+    QuizFinishObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+
+    QuizFinishRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestQuiz'
+        - type: object
+          properties:
+            quiz:
+              $ref: '#/components/schemas/QuizFinishObject'
+
+    QuizNextObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+
+    QuizNextRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestQuiz'
+        - type: object
+          properties:
+            quiz:
+              $ref: '#/components/schemas/QuizNextObject'
+
+    QuizBackObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+
+    QuizBackRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestQuiz'
+        - type: object
+          properties:
+            quiz:
+              $ref: '#/components/schemas/QuizBackObject'
+
+    QuizJoinObject:
+      type: object
+      properties:
+        quizId:
+          $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+        participantName:
+          type: string
+          description: Имя участника/команды
+
+    QuizJoinRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestQuiz'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/QuizJoinObject'
+
+    QuizAnswerObject:
+      type: object
+      properties:
+        participantId:
+          $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+        questionId:
+          $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+        answer:
+          type: string
+
+    QuizAnswerRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestQuiz'
+        - type: object
+          properties:
+            answer:
+              $ref: '#/components/schemas/QuizAnswerObject'
+
+    # Responses
+
+    QuizResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseQuiz'
+        - type: object
+          description: Квиз с id
+          properties:
+            id:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonEntityId'
+            lock:
+              $ref: '../../specs/quiz-engine-base-spec.yaml#/components/schemas/CommonLock'
+
+    QuizInitResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseQuiz'
+        - $ref: '#/components/schemas/QuizResponseObject'
+
+    QuizStartResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseQuiz'
+        - $ref: '#/components/schemas/QuizResponseObject'
+
+    QuizPauseResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseQuiz'
+        - $ref: '#/components/schemas/QuizResponseObject'
+
+    QuizFinishResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseQuiz'
+        - $ref: '#/components/schemas/QuizResponseObject'
+
+    QuizNextResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseQuiz'
+        - $ref: '#/components/schemas/QuizResponseObject'
+
+    QuizBackResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseQuiz'
+        - $ref: '#/components/schemas/QuizResponseObject'
+
+    QuizJoinResponseObject:
+      type: object
+      properties:
+        quiz:
+          $ref: '#/components/schemas/QuizResponseObject'
+        participant:
+          $ref: '#/components/schemas/BaseParticipant'
+
+
+    QuizJoinResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseQuiz'
+        - $ref: '#/components/schemas/QuizJoinResponseObject'
+
+#TODO
+    QuizAnswerResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseQuiz'
+        - $ref: '#/components/schemas/QuizResponseObject'
+
+    # STUBS ======================
+    QuizRequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    QuizRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/QuizDebug'
+
+    QuizDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/QuizRequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/QuizRequestDebugStubs'
+
+    QuizRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+        - badParticipant
+        - badGame
