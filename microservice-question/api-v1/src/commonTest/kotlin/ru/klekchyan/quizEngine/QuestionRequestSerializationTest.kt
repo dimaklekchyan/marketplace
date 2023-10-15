@@ -1,5 +1,7 @@
 package ru.klekchyan.quizEngine
 
+import ru.klekchyan.quizEngine.questions_api.questionApiV1RequestDeserialize
+import ru.klekchyan.quizEngine.questions_api.questionApiV1RequestSerialize
 import ru.klekchyan.quizEngine.api.v1.models.*
 import kotlin.test.Test
 import kotlin.test.assertContains

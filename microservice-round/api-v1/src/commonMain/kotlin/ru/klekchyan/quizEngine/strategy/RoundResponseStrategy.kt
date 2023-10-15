@@ -1,7 +1,7 @@
 package ru.klekchyan.quizEngine.strategy
 
 import kotlinx.serialization.KSerializer
-import ru.klekchyan.quizEngine.IApiStrategy
+import ru.klekchyan.quizEngine.core_api.IApiStrategy
 import ru.klekchyan.quizEngine.api.v1.models.*
 import kotlin.reflect.KClass
 

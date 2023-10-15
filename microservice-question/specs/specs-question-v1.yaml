@@ -170,6 +170,7 @@ components:
               update: '#/components/schemas/QuestionUpdateResponse'
               delete: '#/components/schemas/QuestionDeleteResponse'
               readAll: '#/components/schemas/QuestionReadAllResponse'
+              init: '#/components/schemas/QuestionInitResponse'
 
     BaseQuestion:
       type: object
@@ -368,6 +369,10 @@ components:
       allOf:
         - $ref: '#/components/schemas/IResponseQuestion'
         - $ref: '#/components/schemas/QuestionResponseMulti'
+
+    QuestionInitResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseQuestion'
 
 
     # STUBS ======================
