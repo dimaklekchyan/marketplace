@@ -46,14 +46,13 @@ kotlin {
     targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
         binaries {
             executable {
-                entryPoint = "ru.klekchyan.quizEngine.main"
+                entryPoint = "ru.klekchyan.quizEngine.question_ktor.main"
             }
         }
     }
 
     sourceSets {
-
-        val commonMain by getting {
+        val jvmMain by getting {
             dependencies {
                 // kotlin
                 implementation(kotlin("stdlib-common"))
@@ -68,6 +67,9 @@ kotlin {
                 implementation(ktor("cors")) // "io.ktor:ktor-server-cors:$ktorVersion"
                 implementation(ktor("websockets")) // "io.ktor:ktor-server-websockets:$ktorVersion"
                 implementation(ktor("config-yaml")) // "io.ktor:ktor-server-config-yaml:$ktorVersion"
+                implementation(ktor("call-logging"))
+                implementation(ktor("locations"))
+                implementation(ktor("default-headers"))
 
                 // serialization
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
@@ -81,26 +83,18 @@ kotlin {
                 implementation(project(":microservice-question:stubs"))
                 implementation(project(":microservice-question:common"))
                 implementation(project(":microservice-question:biz"))
+
+                // logging
+                implementation("ch.qos.logback:logback-classic:$logbackVersion")
             }
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
 
-                implementation(ktor("test-host"))
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit"))
+                implementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
                 implementation(ktor("content-negotiation", prefix = "client-"))
                 implementation(ktor("websockets", prefix = "client-"))
-            }
-        }
-
-        val jvmMain by getting {
-            dependencies {
-                // ktor
-                implementation(ktor("call-logging"))
-
-                implementation("ch.qos.logback:logback-classic:$logbackVersion")
             }
         }
     }

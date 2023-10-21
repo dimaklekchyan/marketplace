@@ -4,10 +4,11 @@ import models.QuizCommonEntityId
 import models.QuizError
 import models.QuizRequestId
 import ru.klekchyan.quizEngine.api.v1.models.*
-import ru.klekchyan.quizEngine.models.*
-import ru.klekchyan.quizEngine.stubs.QuizQuestionStubs
-import ru.klekchyan.quizEngine.v1.fromTransport
-import ru.klekchyan.quizEngine.v1.toTransport
+import ru.klekchyan.quizEngine.question_common.QuizQuestionContext
+import ru.klekchyan.quizEngine.question_common.models.*
+import ru.klekchyan.quizEngine.question_common.stubs.QuizQuestionStubs
+import ru.klekchyan.quizEngine.question_mappers.fromTransport
+import ru.klekchyan.quizEngine.question_mappers.toTransport
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

@@ -6,7 +6,7 @@ ktor:
     - resources
   application:
     modules:
-      - 'ru.klekchyan.quizEngine.ApplicationKt.module'
+      - 'ru.klekchyan.quizEngine.question_ktor.ApplicationKt.module'
   urls:
     - 'http://127.0.0.1:8080/'
     - 'http://0.0.0.0:8080/'
