@@ -1,0 +1,72 @@
+openapi: 3.0.4
+info:
+  title: Questions log models
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+paths: {}
+
+components:
+  schemas:
+    QuestionLogModel:
+      allOf:
+        - $ref: '../../specs/quiz-engine-base-log-spec.yaml#/components/schemas/CommonLogModel'
+        - type: object
+          title: Модель лога для микросервиса Question
+          properties:
+            requestId:
+              type: string
+            operation:
+              type: string
+              enum:
+                - create
+                - read
+                - update
+                - delete
+                - readAll
+                - init
+                - finish
+            requestQuestion:
+              $ref: '#/components/schemas/QuestionLog'
+            requestSelector:
+              $ref: '#/components/schemas/QuestionSelectorLog'
+            responseQuestion:
+              $ref: '#/components/schemas/QuestionLog'
+            responseQuestions:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuestionLog'
+
+    QuestionLog:
+      title: Модель лога для вопроса
+      type: object
+      properties:
+        id:
+          type: string
+        gameId:
+          type: string
+        roundId:
+          type: string
+        questionType:
+          type: string
+        formulation:
+          type: string
+        answers:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        matchingTerms:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+
+    QuestionSelectorLog:
+      title: Модель лога выборки
+      properties:
+        gameId:
+          type: string
+        roundId:
+          type: string
