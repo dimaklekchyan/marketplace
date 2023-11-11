@@ -11,6 +11,7 @@ data class QuizQuestionContext(
     var command: QuizQuestionCommand = QuizQuestionCommand.NONE,
     var state: QuizQuestionState = QuizQuestionState.NONE,
     val errors: MutableList<QuizError> = mutableListOf(),
+    var settings: QuizQuestionCorSettings = QuizQuestionCorSettings.NONE,
 
     var workMode: QuizQuestionWorkMode = QuizQuestionWorkMode.PROD,
     var stubCase: QuizQuestionStubs = QuizQuestionStubs.NONE,

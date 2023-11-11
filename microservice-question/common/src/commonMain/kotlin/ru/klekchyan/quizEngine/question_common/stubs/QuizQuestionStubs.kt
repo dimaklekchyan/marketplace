@@ -8,6 +8,9 @@ enum class QuizQuestionStubs {
     BAD_ROUND_ID,
     BAD_GAME_ID,
     BAD_FORMULATION,
+    BAD_TYPE,
     BAD_ANSWERS,
-    BAD_TERMS
+    BAD_TERMS,
+    CANNOT_DELETE,
+    DB_ERROR
 }
