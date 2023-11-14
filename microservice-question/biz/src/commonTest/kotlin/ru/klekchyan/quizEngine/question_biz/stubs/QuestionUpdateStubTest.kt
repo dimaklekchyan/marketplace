@@ -1,7 +1,8 @@
-package ru.klekchyan.quizEngine.question_biz
+package ru.klekchyan.quizEngine.question_biz.stubs
 
 import kotlinx.coroutines.test.runTest
 import models.QuizCommonEntityId
+import ru.klekchyan.quizEngine.question_biz.QuizQuestionProcessor
 import ru.klekchyan.quizEngine.question_common.QuizQuestionContext
 import ru.klekchyan.quizEngine.question_common.models.*
 import ru.klekchyan.quizEngine.question_common.stubs.QuizQuestionStubs

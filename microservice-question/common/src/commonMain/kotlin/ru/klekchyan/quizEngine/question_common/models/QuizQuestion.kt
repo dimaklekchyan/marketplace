@@ -10,4 +10,9 @@ data class QuizQuestion(
     var formulation: String = "",
     val answers: MutableList<QuizQuestionAnswer> = mutableListOf(),
     val matchingTerms: MutableList<QuizQuestionMatchingTerm> = mutableListOf(),
-)
+) {
+    fun deepCopy(): QuizQuestion = this.copy(
+        answers = answers.map { it.copy() }.toMutableList(),
+        matchingTerms = matchingTerms.map { it.copy() }.toMutableList()
+    )
+}

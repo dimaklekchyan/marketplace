@@ -1,15 +1,16 @@
-package ru.klekchyan.quizEngine.question_biz
+package ru.klekchyan.quizEngine.question_biz.stubs
 
 import kotlinx.coroutines.test.runTest
 import models.QuizCommonEntityId
+import ru.klekchyan.quizEngine.question_biz.QuizQuestionProcessor
 import ru.klekchyan.quizEngine.question_common.QuizQuestionContext
 import ru.klekchyan.quizEngine.question_common.models.*
 import ru.klekchyan.quizEngine.question_common.stubs.QuizQuestionStubs
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class QuestionDeleteStubTest {
-    
+class QuestionReadStubTest {
+
     private val processor = QuizQuestionProcessor()
 
     private val id = QuizCommonEntityId("1")
@@ -17,7 +18,7 @@ class QuestionDeleteStubTest {
     @Test
     fun success() = runTest {
         val ctx = QuizQuestionContext(
-            command = QuizQuestionCommand.DELETE,
+            command = QuizQuestionCommand.READ,
             state = QuizQuestionState.NONE,
             workMode = QuizQuestionWorkMode.STUB,
             stubCase = QuizQuestionStubs.SUCCESS,
@@ -33,7 +34,7 @@ class QuestionDeleteStubTest {
     @Test
     fun badId() = runTest {
         val ctx = QuizQuestionContext(
-            command = QuizQuestionCommand.DELETE,
+            command = QuizQuestionCommand.READ,
             state = QuizQuestionState.NONE,
             workMode = QuizQuestionWorkMode.STUB,
             stubCase = QuizQuestionStubs.BAD_ID,
@@ -48,26 +49,9 @@ class QuestionDeleteStubTest {
     }
 
     @Test
-    fun cannotDelete() = runTest {
-        val ctx = QuizQuestionContext(
-            command = QuizQuestionCommand.DELETE,
-            state = QuizQuestionState.NONE,
-            workMode = QuizQuestionWorkMode.STUB,
-            stubCase = QuizQuestionStubs.CANNOT_DELETE,
-            questionRequest = QuizQuestion(
-                id = id
-            )
-        )
-        processor.exec(ctx)
-        assertEquals(QuizQuestionState.FAILING, ctx.state)
-        assertEquals("internal", ctx.errors.firstOrNull()?.group)
-        assertEquals("internal-cannot-delete", ctx.errors.firstOrNull()?.code)
-    }
-
-    @Test
     fun dbError() = runTest {
         val ctx = QuizQuestionContext(
-            command = QuizQuestionCommand.DELETE,
+            command = QuizQuestionCommand.READ,
             state = QuizQuestionState.NONE,
             workMode = QuizQuestionWorkMode.STUB,
             stubCase = QuizQuestionStubs.DB_ERROR,
@@ -83,7 +67,7 @@ class QuestionDeleteStubTest {
     @Test
     fun badStubCase() = runTest {
         val ctx = QuizQuestionContext(
-            command = QuizQuestionCommand.DELETE,
+            command = QuizQuestionCommand.READ,
             state = QuizQuestionState.NONE,
             workMode = QuizQuestionWorkMode.STUB,
             stubCase = QuizQuestionStubs.BAD_FORMULATION,

@@ -1,25 +1,24 @@
-package ru.klekchyan.quizEngine.question_biz
+package ru.klekchyan.quizEngine.question_biz.stubs
 
 import kotlinx.coroutines.test.runTest
 import models.QuizCommonEntityId
+import ru.klekchyan.quizEngine.question_biz.QuizQuestionProcessor
 import ru.klekchyan.quizEngine.question_common.QuizQuestionContext
 import ru.klekchyan.quizEngine.question_common.models.*
 import ru.klekchyan.quizEngine.question_common.stubs.QuizQuestionStubs
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class QuestionReadAllStubTest {
-
+class QuestionDeleteStubTest {
+    
     private val processor = QuizQuestionProcessor()
 
     private val id = QuizCommonEntityId("1")
-    private val gameId = QuizCommonEntityId("12")
-    private val roundId = QuizCommonEntityId("123")
 
     @Test
     fun success() = runTest {
         val ctx = QuizQuestionContext(
-            command = QuizQuestionCommand.READ,
+            command = QuizQuestionCommand.DELETE,
             state = QuizQuestionState.NONE,
             workMode = QuizQuestionWorkMode.STUB,
             stubCase = QuizQuestionStubs.SUCCESS,
@@ -33,45 +32,43 @@ class QuestionReadAllStubTest {
     }
 
     @Test
-    fun badGameId() = runTest {
+    fun badId() = runTest {
         val ctx = QuizQuestionContext(
-            command = QuizQuestionCommand.UPDATE,
+            command = QuizQuestionCommand.DELETE,
             state = QuizQuestionState.NONE,
             workMode = QuizQuestionWorkMode.STUB,
-            stubCase = QuizQuestionStubs.BAD_GAME_ID,
-            questionsSelectorRequest = QuizQuestionsSelector(
-                gameId = QuizCommonEntityId.NONE,
-                roundId = roundId
+            stubCase = QuizQuestionStubs.BAD_ID,
+            questionRequest = QuizQuestion(
+                id = QuizCommonEntityId.NONE
             )
         )
         processor.exec(ctx)
         assertEquals(QuizQuestionState.FAILING, ctx.state)
         assertEquals("validation", ctx.errors.firstOrNull()?.group)
-        assertEquals("gameId", ctx.errors.firstOrNull()?.field)
+        assertEquals("id", ctx.errors.firstOrNull()?.field)
     }
 
     @Test
-    fun badRoundId() = runTest {
+    fun cannotDelete() = runTest {
         val ctx = QuizQuestionContext(
-            command = QuizQuestionCommand.UPDATE,
+            command = QuizQuestionCommand.DELETE,
             state = QuizQuestionState.NONE,
             workMode = QuizQuestionWorkMode.STUB,
-            stubCase = QuizQuestionStubs.BAD_ROUND_ID,
-            questionsSelectorRequest = QuizQuestionsSelector(
-                gameId = gameId,
-                roundId = QuizCommonEntityId.NONE
+            stubCase = QuizQuestionStubs.CANNOT_DELETE,
+            questionRequest = QuizQuestion(
+                id = id
             )
         )
         processor.exec(ctx)
         assertEquals(QuizQuestionState.FAILING, ctx.state)
-        assertEquals("validation", ctx.errors.firstOrNull()?.group)
-        assertEquals("roundId", ctx.errors.firstOrNull()?.field)
+        assertEquals("internal", ctx.errors.firstOrNull()?.group)
+        assertEquals("internal-cannot-delete", ctx.errors.firstOrNull()?.code)
     }
 
     @Test
     fun dbError() = runTest {
         val ctx = QuizQuestionContext(
-            command = QuizQuestionCommand.READ,
+            command = QuizQuestionCommand.DELETE,
             state = QuizQuestionState.NONE,
             workMode = QuizQuestionWorkMode.STUB,
             stubCase = QuizQuestionStubs.DB_ERROR,
@@ -87,7 +84,7 @@ class QuestionReadAllStubTest {
     @Test
     fun badStubCase() = runTest {
         val ctx = QuizQuestionContext(
-            command = QuizQuestionCommand.READ,
+            command = QuizQuestionCommand.DELETE,
             state = QuizQuestionState.NONE,
             workMode = QuizQuestionWorkMode.STUB,
             stubCase = QuizQuestionStubs.BAD_FORMULATION,

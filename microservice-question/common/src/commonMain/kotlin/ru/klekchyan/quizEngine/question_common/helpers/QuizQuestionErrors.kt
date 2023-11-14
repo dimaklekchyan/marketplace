@@ -11,3 +11,16 @@ fun QuizQuestionContext.fail(error: QuizError) {
     state = QuizQuestionState.FAILING
 }
 
+fun errorValidation(
+    field: String,
+    violationCode: String,
+    description: String,
+    level: QuizError.Level = QuizError.Level.ERROR,
+) = QuizError(
+    code = "validation-$field-$violationCode",
+    field = field,
+    group = "validation",
+    message = "Validation error for field $field: $description",
+    level = level,
+)
+
