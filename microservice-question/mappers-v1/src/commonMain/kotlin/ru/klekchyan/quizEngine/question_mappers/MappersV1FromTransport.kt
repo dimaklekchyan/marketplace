@@ -33,8 +33,10 @@ private fun QuestionRequestDebugStubs?.transportToStubCase(): QuizQuestionStubs 
     QuestionRequestDebugStubs.BAD_ROUND_ID -> QuizQuestionStubs.BAD_ROUND_ID
     QuestionRequestDebugStubs.BAD_GAME_ID -> QuizQuestionStubs.BAD_GAME_ID
     QuestionRequestDebugStubs.BAD_FORMULATION -> QuizQuestionStubs.BAD_FORMULATION
+    QuestionRequestDebugStubs.BAD_TYPE -> QuizQuestionStubs.BAD_TYPE
     QuestionRequestDebugStubs.BAD_ANSWERS -> QuizQuestionStubs.BAD_ANSWERS
     QuestionRequestDebugStubs.BAD_TERMS -> QuizQuestionStubs.BAD_TERMS
+    QuestionRequestDebugStubs.CANNOT_DELETE -> QuizQuestionStubs.CANNOT_DELETE
     else -> QuizQuestionStubs.NONE
 }
 

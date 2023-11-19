@@ -11,6 +11,7 @@ data class QuizQuestionContext(
     var command: QuizQuestionCommand = QuizQuestionCommand.NONE,
     var state: QuizQuestionState = QuizQuestionState.NONE,
     val errors: MutableList<QuizError> = mutableListOf(),
+    var settings: QuizQuestionCorSettings = QuizQuestionCorSettings.NONE,
 
     var workMode: QuizQuestionWorkMode = QuizQuestionWorkMode.PROD,
     var stubCase: QuizQuestionStubs = QuizQuestionStubs.NONE,
@@ -19,7 +20,14 @@ data class QuizQuestionContext(
     var timeStart: Instant = Instant.NONE,
 
     var questionRequest: QuizQuestion = QuizQuestion(),
-    var questionResponse: QuizQuestion = QuizQuestion(),
     var questionsSelectorRequest: QuizQuestionsSelector = QuizQuestionsSelector(),
+
+    var questionValidating: QuizQuestion = QuizQuestion(),
+    var questionsSelectorValidating: QuizQuestionsSelector = QuizQuestionsSelector(),
+
+    var questionValidated: QuizQuestion = QuizQuestion(),
+    var questionsSelectorValidated: QuizQuestionsSelector = QuizQuestionsSelector(),
+
+    var questionResponse: QuizQuestion = QuizQuestion(),
     var questionsResponse: MutableList<QuizQuestion> = mutableListOf(),
 )

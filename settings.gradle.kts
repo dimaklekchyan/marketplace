@@ -23,8 +23,14 @@ pluginManagement {
 
 include("acceptance")
 include("core-api")
+include("core-api-log")
 include("core-common")
 include("core-mappers")
+include("core-mappers-log")
+
+include("lib-logging-common")
+include("lib-logging-kermit")
+include("lib-logging-logback")
 
 include("microservice-quiz")
 include("microservice-quiz:api-v1")
@@ -36,11 +42,14 @@ include("microservice-quiz:ktor")
 
 include("microservice-question")
 include("microservice-question:api-v1")
+include("microservice-question:api-log-v1")
 include("microservice-question:mappers-v1")
+include("microservice-question:mappers-log-v1")
 include("microservice-question:common")
+include("microservice-question:app-common")
 include("microservice-question:biz")
 include("microservice-question:stubs")
-include("microservice-question:ktor")
+include("microservice-question:app-ktor")
 
 include("microservice-game")
 include("microservice-game:api-v1")

@@ -5,7 +5,7 @@ import models.QuizError
 import ru.klekchyan.quizEngine.question_common.QuizQuestionContext
 import ru.klekchyan.quizEngine.api.v1.models.*
 import ru.klekchyan.quizEngine.question_common.models.*
-import ru.klekchyan.quizEngine.question_mappers.v1.exceptions.UnknownQuizQuestionCommand
+import ru.klekchyan.quizEngine.question_mappers.exceptions.UnknownQuizQuestionCommand
 
 fun QuizQuestionContext.toTransport(): IResponseQuestion = when (val cmd = command) {
     QuizQuestionCommand.CREATE -> toTransportCreateQuestion()
@@ -13,6 +13,8 @@ fun QuizQuestionContext.toTransport(): IResponseQuestion = when (val cmd = comma
     QuizQuestionCommand.UPDATE -> toTransportUpdateQuestion()
     QuizQuestionCommand.DELETE -> toTransportDeleteQuestion()
     QuizQuestionCommand.READ_ALL -> toTransportReadAllQuestions()
+    QuizQuestionCommand.INIT -> toTransportInitQuestions()
+    QuizQuestionCommand.FINISH -> throw UnknownQuizQuestionCommand(cmd)
     QuizQuestionCommand.NONE -> throw UnknownQuizQuestionCommand(cmd)
 }
 

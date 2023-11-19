@@ -404,8 +404,10 @@ components:
         - success
         - notFound
         - badId
+        - badType
         - badFormulation
         - badAnswers
         - badTerms
         - badRoundId
         - badGameId
+        - cannotDelete

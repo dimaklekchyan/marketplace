@@ -11,7 +11,6 @@ import ru.klekchyan.quizEngine.api.v1.models.*
 val questionApiV1Mapper = Json {
     classDiscriminator = "_"
     encodeDefaults = true
-    ignoreUnknownKeys = true
 
     serializersModule = SerializersModule {
         polymorphicDefaultSerializer(IRequestQuestion::class) {

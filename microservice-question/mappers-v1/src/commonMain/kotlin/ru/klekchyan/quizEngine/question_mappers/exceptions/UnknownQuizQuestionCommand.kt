@@ -1,4 +1,4 @@
-package ru.klekchyan.quizEngine.question_mappers.v1.exceptions
+package ru.klekchyan.quizEngine.question_mappers.exceptions
 
 import ru.klekchyan.quizEngine.question_common.models.QuizQuestionCommand
 

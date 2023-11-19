@@ -6,5 +6,7 @@ enum class QuizQuestionCommand {
     READ,
     UPDATE,
     DELETE,
-    READ_ALL
+    READ_ALL,
+    INIT,
+    FINISH
 }
